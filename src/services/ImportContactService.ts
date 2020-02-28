@@ -8,8 +8,11 @@ export default class ImportContactService {
 
   readonly emailTester: RegExp;
 
+  emails: string[];
+
   constructor() {
     this.contacts = [];
+    this.emails = [];
     this.nameTester = /(?:"?([^"]*)"?\s)?(?:<?([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)>?)/;
     this.emailTester = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   }
@@ -36,6 +39,10 @@ export default class ImportContactService {
       .join(' ');
   }
 
+  checkIfExists(data: string): number {
+    return this.emails.findIndex(email => email === data);
+  }
+
   async run(contactsFileStream: Readable): Promise<void> {
     const parser = csvParse({
       delimiter: ';',
@@ -58,11 +65,26 @@ export default class ImportContactService {
 
       const tags = [origin];
 
-      this.contacts.push({
-        email,
-        name: this.capitalize(name),
-        tags,
-      });
+      const position = this.checkIfExists(email);
+
+      if (position >= 0) {
+        const { altNames, name: savedName, tags: savedTags } = this.contacts[
+          position
+        ];
+
+        if (name.length && savedName !== name && !altNames.includes(name))
+          this.contacts[position].altNames.push(this.capitalize(name));
+        if (origin.length && !savedTags.includes(origin))
+          this.contacts[position].tags.push(origin);
+      } else {
+        this.emails.push(email);
+        this.contacts.push({
+          email,
+          name: this.capitalize(name),
+          tags,
+          altNames: [],
+        });
+      }
     });
 
     await new Promise(resolve => parseCSV.on('end', resolve));
@@ -72,6 +94,6 @@ export default class ImportContactService {
 type Contact = {
   email: string;
   name?: string;
-  altName?: string;
-  tags?: string[];
+  altNames: string[];
+  tags: string[];
 };
