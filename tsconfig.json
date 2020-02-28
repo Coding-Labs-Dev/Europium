@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
@@ -15,10 +15,15 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
+    "typeRoots": ["node_modules/@types", "src/@types"],
     "paths": {
-      "@services/*": ["services/*"]
+      "@config/*": ["config/*"],
+      "@controllers/*": ["app/controllers/*"],
+      "@services/*": ["services/*"],
+      "@schemas/*": ["schemas/*"],
+      "@queues/*": ["queues/*"],
+      "@utils/*": ["utils/*"]
     }
   },
-  "exclude": ["node_modules"],
   "include": ["src", "__tests__"]
 }

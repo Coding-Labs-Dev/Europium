@@ -1,15 +1,16 @@
 import { json2csvAsync } from 'json-2-csv';
 
 export default class ExportContactService {
-  processTags(data: Contact[]): ContactString[] {
+  processData(data: Contact[]): ContactString[] {
     return data.map(item => ({
       ...item,
-      tags: item.tags?.join(','),
+      altNames: item.altNames?.join(', ') || '',
+      tags: item.tags?.join(', '),
     }));
   }
 
   async run(data: Contact[]): Promise<string> {
-    const processedTags = this.processTags(data);
+    const processedTags = this.processData(data);
 
     return json2csvAsync(processedTags, {
       delimiter: {
@@ -26,13 +27,13 @@ export default class ExportContactService {
 type Contact = {
   email: string;
   name?: string;
-  altName?: string;
+  altNames?: string[];
   tags?: string[];
 };
 
 type ContactString = {
   email: string;
   name?: string;
-  altName?: string;
+  altNames?: string;
   tags?: string;
 };

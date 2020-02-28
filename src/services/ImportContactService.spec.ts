@@ -115,6 +115,27 @@ describe('Import', () => {
       }),
     ]);
   });
+  it('should add altName as name if no name is found', async () => {
+    const contactsFileStream = Readable.from([
+      'eunicefcf@gmail.com;BO 2019;\n',
+      'eunicefcf@gmail.com;;Eunice',
+    ]);
+
+    const importContacts = new ImportContactService();
+
+    await importContacts.run(contactsFileStream);
+
+    const { contacts } = importContacts;
+
+    expect(contacts).toEqual([
+      expect.objectContaining({
+        email: 'eunicefcf@gmail.com',
+        tags: ['BO 2019'],
+        name: 'Eunice',
+        altNames: [],
+      }),
+    ]);
+  });
   it('should not repeat tags for the same e-mail', async () => {
     const contactsFileStream = Readable.from([
       'eunicefcf@gmail.com;BO 2019;Eunice\n',
@@ -133,6 +154,50 @@ describe('Import', () => {
         tags: ['BO 2019'],
         name: 'Eunice',
         altNames: [],
+      }),
+    ]);
+  });
+  it('should count duplicated e-mails', async () => {
+    const contactsFileStream = Readable.from([
+      'eunicefcf@gmail.com;BO 2019;Eunice\n',
+      'eunicefcf@gmail.com;BO 2019;Eunice',
+    ]);
+
+    const importContacts = new ImportContactService();
+
+    await importContacts.run(contactsFileStream);
+
+    const { duplicated } = importContacts;
+
+    expect(duplicated).toEqual([
+      expect.objectContaining({
+        email: 'eunicefcf@gmail.com',
+        occurrences: 1,
+      }),
+    ]);
+  });
+  it('should count invalid e-mails', async () => {
+    const contactsFileStream = Readable.from([
+      'eunicefcf@gmail;BO 2019;Eunice\n',
+      'eunicefcfgmail.com;BO 2019;Eunice',
+    ]);
+
+    const importContacts = new ImportContactService();
+
+    await importContacts.run(contactsFileStream);
+
+    const { invalid } = importContacts;
+
+    expect(invalid).toEqual([
+      expect.objectContaining({
+        data: 'eunicefcf@gmail',
+        origin: 'BO 2019',
+        nameFromCSV: 'Eunice',
+      }),
+      expect.objectContaining({
+        data: 'eunicefcfgmail.com',
+        origin: 'BO 2019',
+        nameFromCSV: 'Eunice',
       }),
     ]);
   });

@@ -4,15 +4,22 @@ import csvParse from 'csv-parse';
 export default class ImportContactService {
   contacts: Contact[];
 
+  emails: string[];
+
+  duplicated: Duplicated[];
+
+  invalid: Invalid;
+
   readonly nameTester: RegExp;
 
   readonly emailTester: RegExp;
 
-  emails: string[];
-
   constructor() {
     this.contacts = [];
     this.emails = [];
+    this.duplicated = [];
+    this.invalid = [];
+
     this.nameTester = /(?:"?([^"]*)"?\s)?(?:<?([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)>?)/;
     this.emailTester = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   }
@@ -27,20 +34,31 @@ export default class ImportContactService {
 
   capitalize(data: string): string {
     if (!data.length) return data;
-
     return data
       .toLocaleLowerCase()
       .split(' ')
-      .map((word, i, arr) =>
-        word.length > 2 || i === arr.length - 1 || i === 0
+      .map((word, i, arr) => {
+        return word.length > 2 || i === arr.length - 1 || i === 0
           ? `${word[0].toLocaleUpperCase()}${word.substr(1)}`
-          : word,
-      )
+          : word;
+      })
       .join(' ');
   }
 
   checkIfExists(data: string): number {
     return this.emails.findIndex(email => email === data);
+  }
+
+  registerDuplicate(data: string): void {
+    const position = this.duplicated
+      .map(({ email }) => email)
+      .findIndex(email => email === data);
+
+    if (position >= 0) {
+      this.duplicated[position].occurrences += 1;
+    } else {
+      this.duplicated.push({ email: data, occurrences: 1 });
+    }
   }
 
   async run(contactsFileStream: Readable): Promise<void> {
@@ -54,33 +72,39 @@ export default class ImportContactService {
     parseCSV.on('data', line => {
       const { data, origin, nameFromCSV } = line;
 
-      const emailMatch = this.getEmail(data);
-      const nameMatch = this.getName(data);
+      const emailMatch = this.getEmail(data.trim());
+      const nameMatch = this.getName(data.trim());
 
-      if (!emailMatch) return;
+      if (!emailMatch) return this.invalid.push(line);
 
       const email = emailMatch[0];
 
-      const name = nameMatch && nameMatch[1] ? nameMatch[1] : nameFromCSV;
-
-      const tags = [origin];
+      const name =
+        nameMatch && nameMatch[1] ? nameMatch[1].trim() : nameFromCSV.trim();
+      const tags = [origin.trim()];
 
       const position = this.checkIfExists(email);
 
       if (position >= 0) {
+        this.registerDuplicate(email);
+
         const { altNames, name: savedName, tags: savedTags } = this.contacts[
           position
         ];
 
         if (name.length && savedName !== name && !altNames.includes(name))
-          this.contacts[position].altNames.push(this.capitalize(name));
+          if (savedName === '') {
+            this.contacts[position].name = this.capitalize(name);
+          } else {
+            this.contacts[position].altNames.push(this.capitalize(name));
+          }
         if (origin.length && !savedTags.includes(origin))
           this.contacts[position].tags.push(origin);
       } else {
         this.emails.push(email);
         this.contacts.push({
           email,
-          name: this.capitalize(name),
+          name: name.length ? this.capitalize(name) : '',
           tags,
           altNames: [],
         });
@@ -97,3 +121,10 @@ type Contact = {
   altNames: string[];
   tags: string[];
 };
+
+type Duplicated = {
+  email: string;
+  occurrences: number;
+};
+
+type Invalid = string[];

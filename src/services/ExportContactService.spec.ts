@@ -1,7 +1,7 @@
 import ExportContactService from '@services/ExportContactService';
 
 describe('Export', () => {
-  it('should create a csv file with data from json', async () => {
+  it('should create a csv file strtucture with data from json', async () => {
     const data = [
       {
         email: 'lukitalima7@gmail.com',
@@ -35,7 +35,7 @@ describe('Export', () => {
 
     expect(csv).toEqual(
       expect.stringMatching(
-        'email;name;tags\nlukitalima7@gmail.com;;EMAIL LESTE EUROPEU\nnpetrulis@yahoo.com.br;N Pp;EMAIL TRANSIBERIANO 2019\ncrismari28@hotmail.com;Cristina;E mails SITE BRASIL ORIENTE\nembaroni@bol.com.br;Eduardo Martins Mantovani Baroni;BO 2014\neunicefcf@gmail.com;Eunice de Fátima Chaves Figueiredo;BO 2014',
+        'email;name;tags;altNames\nlukitalima7@gmail.com;;EMAIL LESTE EUROPEU;\nnpetrulis@yahoo.com.br;N Pp;EMAIL TRANSIBERIANO 2019;\ncrismari28@hotmail.com;Cristina;E mails SITE BRASIL ORIENTE;\nembaroni@bol.com.br;Eduardo Martins Mantovani Baroni;BO 2014;\neunicefcf@gmail.com;Eunice de Fátima Chaves Figueiredo;BO 2014',
       ),
     );
   });
