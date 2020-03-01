@@ -17,10 +17,11 @@
     "noImplicitAny": true,
     "typeRoots": ["node_modules/@types", "src/@types"],
     "paths": {
+      "@types/*": ["@types/*"],
       "@config/*": ["config/*"],
       "@controllers/*": ["app/controllers/*"],
       "@services/*": ["services/*"],
-      "@schemas/*": ["schemas/*"],
+      "@models/*": ["app/models/*"],
       "@queues/*": ["queues/*"],
       "@utils/*": ["utils/*"]
     }
