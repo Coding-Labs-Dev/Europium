@@ -10,4 +10,8 @@ describe('List Models', () => {
   it('should have a Contact Model', () => {
     expect(models).toContain('Contact.');
   });
+
+  it('should have a Template Model', () => {
+    expect(models).toContain('Template.');
+  });
 });
