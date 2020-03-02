@@ -4,11 +4,11 @@
     "module": "commonjs",
     "allowJs": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "strictPropertyInitialization": false,
     "moduleResolution": "node",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -17,14 +17,14 @@
     "noImplicitAny": true,
     "typeRoots": ["node_modules/@types", "src/@types"],
     "paths": {
-      "@types/*": ["@types/*"],
-      "@config/*": ["config/*"],
-      "@database/*": ["database/*"],
-      "@controllers/*": ["app/controllers/*"],
-      "@services/*": ["services/*"],
-      "@models/*": ["app/models/*"],
-      "@queues/*": ["queues/*"],
-      "@utils/*": ["utils/*"]
+      "@types/*": ["./src/@types/*"],
+      "@config/*": ["./src/config/*"],
+      "@database/*": ["./src/database/*"],
+      "@controllers/*": ["./src/app/controllers/*"],
+      "@services/*": ["./src/services/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@queues/*": ["./src/queues/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src", "__tests__"]
