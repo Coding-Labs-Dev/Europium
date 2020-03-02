@@ -7,12 +7,19 @@ import {
 import { init as Model } from '@models/Email';
 
 describe('Models: Email', () => {
-  const Emails = Model(sequelize);
-  const emails = new Emails();
-  checkModelName(Emails)('Email');
+  const Email = Model(sequelize);
+  const email = new Email();
+  checkModelName(Email)('Email');
 
   describe('proprieties', () => {
     const attributes = ['id', 'sent', 'template_id', 'variables'];
-    attributes.map(checkPropertyExists(emails));
+    attributes.map(checkPropertyExists(email));
+  });
+
+  describe('associations', () => {
+    const Template = '';
+    const spy = jest.spyOn(Email, 'belongsTo');
+
+    expect(Email.belongsTo).toHaveBeenCalledWith(Template);
   });
 });

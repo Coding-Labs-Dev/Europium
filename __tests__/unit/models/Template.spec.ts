@@ -4,10 +4,10 @@ import {
   checkPropertyExists,
 } from 'sequelize-test-helpers';
 
-import { init as Model } from '@models/Template';
+import Template, { TemplateAttributes } from '@models/Template';
 
 describe('Models: Template', () => {
-  const Template = Model(sequelize);
+  Template.init(TemplateAttributes, sequelize);
   const template = new Template();
   checkModelName(Template)('Template');
 

@@ -9,6 +9,10 @@ module.exports = {
                 autoIncrement: true,
                 primaryKey: true,
             },
+            sent: {
+                type: Sequelize.DATE,
+                allowNull: false,
+            },
             template_id: {
                 type: Sequelize.INTEGER,
                 references: { model: 'templates', key: 'id' },

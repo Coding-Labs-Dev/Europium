@@ -39,6 +39,7 @@ export const init = (sequelize: Sequelize): EmailStatic => {
       allowNull: true,
     },
   }) as EmailStatic;
+
   return Email;
 };
 

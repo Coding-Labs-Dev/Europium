@@ -4,7 +4,9 @@ import UploadFileService from '@services/UploadFileService';
 
 import ImportController from '@controllers/ImportController';
 
-import Contact from '@models/Contact';
+// import Contact from '@models/Contact';
+import Template from '@models/Template';
+// import Email from '@models/Email';
 
 const routes = Router();
 
@@ -16,11 +18,19 @@ routes.post(
 
 routes.post('/', async (req: Request, res: Response) => {
   try {
-    const contact = await Contact.create({
-      name: 'Luis',
-      email: 'luismramirezr@me.com',
-    });
-    return res.json(contact);
+    const template = await Template.findAll();
+    // const email = await Email.findOne({
+    //   where: {
+    //     id: 1,
+    //   },
+    //   include: [
+    //     {
+    //       model: Template,
+    //     },
+    //   ],
+    // });
+
+    return res.json(template);
   } catch (err) {
     return res.json(err);
   }
