@@ -15,12 +15,15 @@ routes.post(
 );
 
 routes.post('/', async (req: Request, res: Response) => {
-  const contact = await Contact.create({
-    name: 'Luis',
-    email: 'luismramirezr@me.com',
-  });
-
-  return res.json(contact);
+  try {
+    const contact = await Contact.create({
+      name: 'Luis',
+      email: 'luismramirezr@me.com',
+    });
+    return res.json(contact);
+  } catch (err) {
+    return res.json(err);
+  }
 });
 
 export default routes;

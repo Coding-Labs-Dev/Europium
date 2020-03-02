@@ -1,10 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-import Contact from '@models/Contact';
-
 import databaseConfig from '@config/database';
-
-const models = [Contact];
 
 class Database {
   public connection: Sequelize;
@@ -15,9 +11,7 @@ class Database {
 
   init(): void {
     this.connection = new Sequelize(databaseConfig);
-
-    models.map(model => model.initiator(this.connection));
   }
 }
 
-export default new Database();
+export default new Database().connection;

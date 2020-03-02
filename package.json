@@ -8,7 +8,7 @@
     "test": "cross-env NODE_ENV=test jest --watch",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand --watch",
     "migration:create": "./scripts/create_migration.sh",
-    "db:migrate": "./scripts/migrate.sh"
+    "db:migrate": "cross-env NODE_ENV=test ./scripts/migrate.sh"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.29",
@@ -20,6 +20,7 @@
     "@types/validator": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
+    "chai": "^4.2.0",
     "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
@@ -31,6 +32,8 @@
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1",
     "sequelize-cli": "^5.5.1",
+    "sequelize-test-helpers": "^1.2.2",
+    "sinon": "^9.0.0",
     "sucrase": "^3.12.1",
     "ts-jest": "^25.2.1",
     "ts-node": "^8.6.2",

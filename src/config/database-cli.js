@@ -6,11 +6,12 @@ if (process.env.NODE_ENV !== 'production') {
     path: path.resolve(
       __dirname,
       '..',
+      '..',
       `.env.${process.env.NODE_ENV || 'development'}`,
     ),
   });
 } else {
-  dotenv.config();
+  dotenv.config(process.env.NODE_ENV);
 }
 
 module.exports = {

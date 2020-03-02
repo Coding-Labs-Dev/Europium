@@ -19,6 +19,7 @@
     "paths": {
       "@types/*": ["@types/*"],
       "@config/*": ["config/*"],
+      "@database/*": ["database/*"],
       "@controllers/*": ["app/controllers/*"],
       "@services/*": ["services/*"],
       "@models/*": ["app/models/*"],
