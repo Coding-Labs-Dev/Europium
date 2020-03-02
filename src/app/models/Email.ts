@@ -2,7 +2,7 @@
 import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
 import connection from '@database/index';
 
-interface EmailsModel extends Model {
+interface EmailModel extends Model {
   readonly id: number;
   readonly sent: Date;
   readonly template_id: number;
@@ -11,12 +11,12 @@ interface EmailsModel extends Model {
   readonly updated_at: Date;
 }
 
-type EmailsStatic = typeof Model & {
-  new (values?: object, options?: BuildOptions): EmailsModel;
+type EmailStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): EmailModel;
 };
 
-export const init = (sequelize: Sequelize): EmailsStatic => {
-  const Emails = sequelize.define('Emails', {
+export const init = (sequelize: Sequelize): EmailStatic => {
+  const Email = sequelize.define('Email', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -38,8 +38,8 @@ export const init = (sequelize: Sequelize): EmailsStatic => {
       type: DataTypes.JSON,
       allowNull: true,
     },
-  }) as EmailsStatic;
-  return Emails;
+  }) as EmailStatic;
+  return Email;
 };
 
 export default init(connection);
