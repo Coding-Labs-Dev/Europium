@@ -4,10 +4,9 @@ import connection from '@database/index';
 
 interface TemplateModel extends Model {
   readonly id: number;
-  readonly name: string | null;
-  readonly email: string;
-  readonly alternate_names: string[] | null;
-  readonly active: boolean;
+  readonly name: string;
+  readonly path: string;
+  readonly variables: string[] | null;
   readonly created_at: Date;
   readonly updated_at: Date;
 }

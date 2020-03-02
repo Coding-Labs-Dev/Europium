@@ -14,4 +14,8 @@ describe('List Models', () => {
   it('should have a Template Model', () => {
     expect(models).toContain('Template.');
   });
+
+  it('should have a Emails Model', () => {
+    expect(models).toContain('Emails.');
+  });
 });
