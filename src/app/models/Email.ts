@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
-import connection from '@database/index';
+import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 interface EmailModel extends Model {
   readonly id: number;
@@ -15,32 +14,28 @@ type EmailStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EmailModel;
 };
 
-export const init = (sequelize: Sequelize): EmailStatic => {
-  const Email = sequelize.define('Email', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-    },
-    sent: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    template_id: {
-      type: DataTypes.NUMBER,
-      references: { model: 'Templates', key: 'id' },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-      allowNull: false,
-    },
-    variables: {
-      type: DataTypes.JSON,
-      allowNull: true,
-    },
-  }) as EmailStatic;
+export default class Email extends Model<EmailModel, EmailStatic> {}
 
-  return Email;
+export const EmailAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  },
+  sent: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  template_id: {
+    type: DataTypes.NUMBER,
+    references: { model: 'Templates', key: 'id' },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    allowNull: false,
+  },
+  variables: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
 };
-
-export default init(connection);

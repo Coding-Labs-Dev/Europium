@@ -1,18 +1,46 @@
-import {
-  sequelize,
-  checkModelName,
-  checkPropertyExists,
-} from 'sequelize-test-helpers';
+import SequelizeMock from 'sequelize-mock';
+import { DataTypes } from 'sequelize';
 
-import { init as Model } from '@models/Contact';
+import Contact, { ContactAttributes } from '@models/Contact';
 
 describe('Models: Contact', () => {
-  const Contact = Model(sequelize);
-  const contact = new Contact();
-  checkModelName(Contact)('Contact');
+  const sequelize = new SequelizeMock();
+  const model = sequelize.define(Contact.name, ContactAttributes);
+
+  it('should have name Contact', () => expect(Contact.name).toBe('Contact'));
 
   describe('proprieties', () => {
-    const attributes = ['id', 'name', 'email', 'alternate_names', 'active'];
-    attributes.map(checkPropertyExists(contact));
+    const attributes = [
+      {
+        name: 'id',
+        type: DataTypes.INTEGER,
+      },
+      {
+        name: 'name',
+        type: DataTypes.STRING,
+      },
+      {
+        name: 'email',
+        type: DataTypes.STRING,
+      },
+      {
+        name: 'alternate_names',
+        type: DataTypes.JSON,
+      },
+      {
+        name: 'active',
+        type: DataTypes.BOOLEAN,
+      },
+    ];
+
+    attributes.map(({ name }) =>
+      it(`should have an attribute '${name}'`, () =>
+        expect(model._defaults).toHaveProperty(name)),
+    );
+
+    attributes.map(({ name, type }) =>
+      it(`should have attribute '${name}' of type ${type}`, () =>
+        expect(model._defaults[name].type).toStrictEqual(type)),
+    );
   });
 });

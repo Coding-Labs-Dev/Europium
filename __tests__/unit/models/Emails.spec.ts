@@ -1,25 +1,42 @@
-import {
-  sequelize,
-  checkModelName,
-  checkPropertyExists,
-} from 'sequelize-test-helpers';
+import SequelizeMock from 'sequelize-mock';
+import { DataTypes } from 'sequelize';
 
-import { init as Model } from '@models/Email';
+import Email, { EmailAttributes } from '@models/Email';
 
 describe('Models: Email', () => {
-  const Email = Model(sequelize);
-  const email = new Email();
-  checkModelName(Email)('Email');
+  const sequelize = new SequelizeMock();
+  const model = sequelize.define(Email.name, EmailAttributes);
+
+  it('should have name Email', () => expect(Email.name).toBe('Email'));
 
   describe('proprieties', () => {
-    const attributes = ['id', 'sent', 'template_id', 'variables'];
-    attributes.map(checkPropertyExists(email));
-  });
+    const attributes = [
+      {
+        name: 'id',
+        type: DataTypes.INTEGER,
+      },
+      {
+        name: 'sent',
+        type: DataTypes.DATE,
+      },
+      {
+        name: 'template_id',
+        type: DataTypes.NUMBER,
+      },
+      {
+        name: 'variables',
+        type: DataTypes.JSON,
+      },
+    ];
 
-  describe('associations', () => {
-    const Template = '';
-    const spy = jest.spyOn(Email, 'belongsTo');
+    attributes.map(({ name }) =>
+      it(`should have an attribute '${name}'`, () =>
+        expect(model._defaults).toHaveProperty(name)),
+    );
 
-    expect(Email.belongsTo).toHaveBeenCalledWith(Template);
+    attributes.map(({ name, type }) =>
+      it(`should have attribute '${name}' of type ${type}`, () =>
+        expect(model._defaults[name].type).toStrictEqual(type)),
+    );
   });
 });

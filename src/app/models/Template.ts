@@ -1,13 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {
-  Sequelize,
-  Model,
-  DataTypes,
-  BuildOptions,
-  ModelAttributes,
-  ModelCtor,
-} from 'sequelize';
-// import connection from '@database/index';
+import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 interface TemplateModel extends Model {
   readonly id: number;
@@ -22,32 +14,7 @@ type TemplateStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): TemplateModel;
 };
 
-// export const init = (sequelize: Sequelize): TemplateStatic => {
-//   const Template = sequelize.define('Template', {
-//     id: {
-//       type: DataTypes.INTEGER,
-//       autoIncrement: true,
-//       primaryKey: true,
-//       allowNull: false,
-//     },
-//     name: {
-//       type: DataTypes.STRING,
-//       allowNull: false,
-//       unique: true,
-//     },
-//     path: {
-//       type: DataTypes.STRING,
-//       allowNull: false,
-//       unique: true,
-//     },
-//     variables: {
-//       type: DataTypes.JSON,
-//       allowNull: true,
-//     },
-//   }) as TemplateStatic;
-
-//   return Template;
-// };
+export default class Template extends Model<TemplateModel, TemplateStatic> {}
 
 export const TemplateAttributes = {
   id: {
@@ -71,35 +38,3 @@ export const TemplateAttributes = {
     allowNull: true,
   },
 };
-
-class Template extends Model<TemplateModel, TemplateStatic> {}
-
-// init(sequelize: Sequelize, options: BuildOptions): void {
-//   super.init(
-//     {
-//       id: {
-//         type: DataTypes.INTEGER,
-//         autoIncrement: true,
-//         primaryKey: true,
-//         allowNull: false,
-//       },
-//       name: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true,
-//       },
-//       path: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true,
-//       },
-//       variables: {
-//         type: DataTypes.JSON,
-//         allowNull: true,
-//       },
-//     },
-//     options,
-//   );
-// }
-
-export default Template;

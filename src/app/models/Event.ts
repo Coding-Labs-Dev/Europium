@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
-import connection from '@database/index';
+import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 interface EventModel extends Model {
   readonly id: number;
@@ -23,46 +22,43 @@ type EventStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EventModel;
 };
 
-export const init = (sequelize: Sequelize): EventStatic => {
-  const Event = sequelize.define('Event', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-    },
-    email_id: {
-      type: DataTypes.NUMBER,
-      references: { model: 'Email', key: 'id' },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-      allowNull: false,
-    },
-    contact_id: {
-      type: DataTypes.NUMBER,
-      references: { model: 'Contact', key: 'id' },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-      allowNull: false,
-    },
-    event_type: {
-      type: DataTypes.ENUM(
-        'reject',
-        'bounce',
-        'complaint',
-        'delivery',
-        'open',
-        'click',
-        'render_failure',
-      ),
-      allowNull: false,
-    },
-    event_detail: {
-      type: DataTypes.JSON,
-      allowNull: false,
-    },
-  }) as EventStatic;
-  return Event;
-};
+export default class Event extends Model<EventModel, EventStatic> {}
 
-export default init(connection);
+export const EventAttributes = {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  },
+  email_id: {
+    type: DataTypes.INTEGER,
+    references: { model: 'Email', key: 'id' },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    allowNull: false,
+  },
+  contact_id: {
+    type: DataTypes.INTEGER,
+    references: { model: 'Contact', key: 'id' },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+    allowNull: false,
+  },
+  event_type: {
+    type: DataTypes.ENUM(
+      'reject',
+      'bounce',
+      'complaint',
+      'delivery',
+      'open',
+      'click',
+      'render_failure',
+    ),
+    allowNull: false,
+  },
+  event_detail: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+};
