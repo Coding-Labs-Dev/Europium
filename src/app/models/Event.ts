@@ -35,14 +35,14 @@ export const EventAttributes = {
   },
   email_id: {
     type: DataTypes.INTEGER,
-    references: { model: 'Email', key: 'id' },
+    references: { model: 'emails', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,
   },
   contact_id: {
     type: DataTypes.INTEGER,
-    references: { model: 'Contact', key: 'id' },
+    references: { model: 'contacts', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,

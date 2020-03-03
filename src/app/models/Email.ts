@@ -34,8 +34,8 @@ export const EmailAttributes = {
     allowNull: false,
   },
   template_id: {
-    type: DataTypes.NUMBER,
-    references: { model: 'Templates', key: 'id' },
+    type: DataTypes.INTEGER,
+    references: { model: 'templates', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,

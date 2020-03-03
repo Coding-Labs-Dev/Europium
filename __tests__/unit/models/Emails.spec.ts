@@ -21,7 +21,7 @@ describe('Models: Email', () => {
       },
       {
         name: 'template_id',
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
       },
       {
         name: 'variables',

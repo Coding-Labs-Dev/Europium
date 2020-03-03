@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Readable } from 'stream';
 import csvParse from 'csv-parse';
 
@@ -88,15 +89,21 @@ export default class ImportContactService {
       if (position >= 0) {
         this.registerDuplicate(email);
 
-        const { altNames, name: savedName, tags: savedTags } = this.contacts[
-          position
-        ];
+        const {
+          alternate_names,
+          name: savedName,
+          tags: savedTags,
+        } = this.contacts[position];
 
-        if (name.length && savedName !== name && !altNames.includes(name))
+        if (
+          name.length &&
+          savedName !== name &&
+          !alternate_names.includes(name)
+        )
           if (savedName === '') {
             this.contacts[position].name = this.capitalize(name);
           } else {
-            this.contacts[position].altNames.push(this.capitalize(name));
+            this.contacts[position].alternate_names.push(this.capitalize(name));
           }
         if (origin.length && !savedTags.includes(origin))
           this.contacts[position].tags.push(origin);
@@ -106,7 +113,7 @@ export default class ImportContactService {
           email,
           name: name.length ? this.capitalize(name) : '',
           tags,
-          altNames: [],
+          alternate_names: [],
         });
       }
     });
@@ -118,7 +125,7 @@ export default class ImportContactService {
 type Contact = {
   email: string;
   name?: string;
-  altNames: string[];
+  alternate_names: string[];
   tags: string[];
 };
 

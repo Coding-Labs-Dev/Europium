@@ -24,31 +24,31 @@ describe('Import', () => {
         email: 'lukitalima7@gmail.com',
         name: '',
         tags: ['EMAIL LESTE EUROPEU'],
-        altNames: [],
+        alternate_names: [],
       }),
       expect.objectContaining({
         email: 'npetrulis@yahoo.com.br',
         name: 'N Pp',
         tags: ['EMAIL TRANSIBERIANO 2019'],
-        altNames: [],
+        alternate_names: [],
       }),
       expect.objectContaining({
         email: 'crismari28@hotmail.com',
         tags: ['E mails SITE BRASIL ORIENTE'],
-        altNames: [],
+        alternate_names: [],
         name: 'Cristina',
       }),
       expect.objectContaining({
         email: 'embaroni@bol.com.br',
         tags: ['BO 2014'],
-        altNames: [],
+        alternate_names: [],
         name: 'Eduardo Martins Mantovani Baroni',
       }),
       expect.objectContaining({
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2014', 'BO 2019'],
         name: 'Eunice de Fátima Chaves Figueiredo',
-        altNames: ['Eunice'],
+        alternate_names: ['Eunice'],
       }),
     ]);
   });
@@ -69,7 +69,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        altNames: [],
+        alternate_names: [],
       }),
     ]);
   });
@@ -90,7 +90,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        altNames: ['Eunice Faria'],
+        alternate_names: ['Eunice Faria'],
       }),
     ]);
   });
@@ -111,7 +111,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        altNames: [],
+        alternate_names: [],
       }),
     ]);
   });
@@ -132,7 +132,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        altNames: [],
+        alternate_names: [],
       }),
     ]);
   });
@@ -153,7 +153,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        altNames: [],
+        alternate_names: [],
       }),
     ]);
   });
