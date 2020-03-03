@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Model, DataTypes, BuildOptions } from 'sequelize';
+import { Model, ModelCtor, DataTypes, BuildOptions } from 'sequelize';
 
 interface EmailModel extends Model {
   readonly id: number;
@@ -14,7 +14,13 @@ type EmailStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EmailModel;
 };
 
-export default class Email extends Model<EmailModel, EmailStatic> {}
+export default class Email extends Model<EmailModel, EmailStatic> {
+  static associate(models: { [key: string]: ModelCtor<Model> }): void {
+    this.belongsTo(models.Template, {
+      foreignKey: 'template_id',
+    });
+  }
+}
 
 export const EmailAttributes = {
   id: {

@@ -14,7 +14,9 @@ type TemplateStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): TemplateModel;
 };
 
-export default class Template extends Model<TemplateModel, TemplateStatic> {}
+export default class Template extends Model<TemplateModel, TemplateStatic> {
+  static associate?: () => void;
+}
 
 export const TemplateAttributes = {
   id: {

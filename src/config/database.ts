@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
     path: resolve(
       __dirname,
       '..',
+      '..',
       `.env.${process.env.NODE_ENV || 'development'}`,
     ),
   });

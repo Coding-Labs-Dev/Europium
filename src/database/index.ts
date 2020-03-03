@@ -2,29 +2,7 @@ import { Sequelize } from 'sequelize';
 
 import databaseConfig from '@config/database';
 
-import Template, { TemplateAttributes } from '@models/Template';
-import Email, { EmailAttributes } from '@models/Email';
-import Contact, { ContactAttributes } from '@models/Contact';
-import Event, { EventAttributes } from '@models/Event';
-
-const models = [
-  {
-    model: Template,
-    attributes: TemplateAttributes,
-  },
-  {
-    model: Email,
-    attributes: EmailAttributes,
-  },
-  {
-    model: Contact,
-    attributes: ContactAttributes,
-  },
-  {
-    model: Event,
-    attributes: EventAttributes,
-  },
-];
+import models from '@models/index';
 
 class Database {
   public connection: Sequelize;
@@ -36,9 +14,16 @@ class Database {
   init(): void {
     this.connection = new Sequelize(databaseConfig);
 
-    models.map(({ model, attributes }) =>
-      model.init(attributes, { sequelize: this.connection }),
-    );
+    models
+      .map(model => {
+        const { model: Model, attributes } = model;
+        Model.init(attributes, { sequelize: this.connection });
+        return model;
+      })
+      .forEach(
+        ({ model }) =>
+          model.associate && model.associate(this.connection.models),
+      );
   }
 }
 

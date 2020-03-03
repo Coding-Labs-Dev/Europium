@@ -22,7 +22,9 @@ type EventStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EventModel;
 };
 
-export default class Event extends Model<EventModel, EventStatic> {}
+export default class Event extends Model<EventModel, EventStatic> {
+  static associate?: () => void;
+}
 
 export const EventAttributes = {
   id: {

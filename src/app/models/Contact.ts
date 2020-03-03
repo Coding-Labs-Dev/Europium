@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
+import { Model, DataTypes, BuildOptions } from 'sequelize';
 
 interface ContactModel extends Model {
   readonly id: number;
@@ -14,6 +14,10 @@ interface ContactModel extends Model {
 type ContactStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): ContactModel;
 };
+
+export default class Contact extends Model<ContactModel, ContactStatic> {
+  static associate?: () => void;
+}
 
 export const ContactAttributes = {
   id: {
@@ -41,5 +45,3 @@ export const ContactAttributes = {
     defaultValue: true,
   },
 };
-
-export default class Contact extends Model<ContactModel, ContactStatic> {}
