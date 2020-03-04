@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { QueryInterface, DataTypes } from 'sequelize';
 
 module.exports = {
@@ -6,28 +5,28 @@ module.exports = {
     queryInterface: QueryInterface,
     Sequelize: typeof DataTypes,
   ): Promise<void> => {
-    return queryInterface.createTable('events', {
+    return queryInterface.createTable('Events', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      email_id: {
+      emailId: {
         type: Sequelize.INTEGER,
-        references: { model: 'emails', key: 'id' },
+        references: { model: 'Emails', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: false,
       },
-      contact_id: {
+      contactId: {
         type: Sequelize.INTEGER,
-        references: { model: 'contacts', key: 'id' },
+        references: { model: 'Contacts', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         allowNull: false,
       },
-      event_type: {
+      eventType: {
         type: Sequelize.ENUM(
           'send',
           'reject',
@@ -40,15 +39,15 @@ module.exports = {
         ),
         allowNull: false,
       },
-      event_details: {
+      eventDetails: {
         type: Sequelize.JSON,
       },
-      created_at: { type: Sequelize.DATE, allowNull: false },
-      updated_at: { type: Sequelize.DATE, allowNull: false },
+      createdAt: { type: Sequelize.DATE, allowNull: false },
+      updatedAt: { type: Sequelize.DATE, allowNull: false },
     });
   },
 
   down: (queryInterface: QueryInterface): Promise<void> => {
-    return queryInterface.dropTable('events');
+    return queryInterface.dropTable('Events');
   },
 };

@@ -21,9 +21,9 @@ const configuration: Options = {
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_DB_NAME || 'email_extractor',
+  logging: process.env.NODE_ENV === 'test' ? false : undefined,
   define: {
     timestamps: true,
-    underscored: true,
   },
 };
 

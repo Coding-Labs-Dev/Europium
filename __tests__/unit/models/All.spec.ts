@@ -1,7 +1,7 @@
 import Database from '@database/index';
 
 describe('Models', () => {
-  const models = ['Template', 'Contact', 'Email', 'Event'];
+  const models = ['Template', 'Contact', 'Email', 'Event', 'Tag'];
 
   models.map(model =>
     it(`should have a Model named ${model}`, () =>

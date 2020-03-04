@@ -5,26 +5,16 @@ module.exports = {
     queryInterface: QueryInterface,
     Sequelize: typeof DataTypes,
   ): Promise<void> => {
-    return queryInterface.createTable('Emails', {
+    return queryInterface.createTable('Tags', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      sent: {
-        type: Sequelize.DATE,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false,
-      },
-      templateId: {
-        type: Sequelize.INTEGER,
-        references: { model: 'Templates', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-        allowNull: false,
-      },
-      variables: {
-        type: Sequelize.JSON,
       },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },
@@ -32,6 +22,6 @@ module.exports = {
   },
 
   down: (queryInterface: QueryInterface): Promise<void> => {
-    return queryInterface.dropTable('Emails');
+    return queryInterface.dropTable('Tags');
   },
 };

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('contacts', {
+        return queryInterface.createTable('Contacts', {
             id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -18,7 +18,7 @@ module.exports = {
                 allowNull: false,
                 unique: true,
             },
-            alternate_names: {
+            alternateNames: {
                 type: Sequelize.JSON,
                 allowNull: true,
             },
@@ -27,11 +27,11 @@ module.exports = {
                 allowNull: false,
                 defaultValue: true,
             },
-            created_at: { type: Sequelize.DATE, allowNull: false },
-            updated_at: { type: Sequelize.DATE, allowNull: false },
+            createdAt: { type: Sequelize.DATE, allowNull: false },
+            updatedAt: { type: Sequelize.DATE, allowNull: false },
         });
     },
     down: (queryInterface) => {
-        return queryInterface.dropTable('contacts');
+        return queryInterface.dropTable('Contacts');
     },
 };

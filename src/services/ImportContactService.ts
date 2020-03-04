@@ -90,20 +90,16 @@ export default class ImportContactService {
         this.registerDuplicate(email);
 
         const {
-          alternate_names,
+          alternateNames,
           name: savedName,
           tags: savedTags,
         } = this.contacts[position];
 
-        if (
-          name.length &&
-          savedName !== name &&
-          !alternate_names.includes(name)
-        )
+        if (name.length && savedName !== name && !alternateNames.includes(name))
           if (savedName === '') {
             this.contacts[position].name = this.capitalize(name);
           } else {
-            this.contacts[position].alternate_names.push(this.capitalize(name));
+            this.contacts[position].alternateNames.push(this.capitalize(name));
           }
         if (origin.length && !savedTags.includes(origin))
           this.contacts[position].tags.push(origin);
@@ -113,7 +109,7 @@ export default class ImportContactService {
           email,
           name: name.length ? this.capitalize(name) : '',
           tags,
-          alternate_names: [],
+          alternateNames: [],
         });
       }
     });
@@ -125,7 +121,7 @@ export default class ImportContactService {
 type Contact = {
   email: string;
   name?: string;
-  alternate_names: string[];
+  alternateNames: string[];
   tags: string[];
 };
 

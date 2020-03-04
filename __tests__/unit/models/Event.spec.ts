@@ -1,31 +1,28 @@
-import SequelizeMock from 'sequelize-mock';
-import { DataTypes } from 'sequelize';
-
-import Event, { EventAttributes } from '@models/Event';
+import '@database/index';
+import Event from '@models/Event';
 
 describe('Models: Event', () => {
-  const sequelize = new SequelizeMock();
-  const model = sequelize.define(Event.name, EventAttributes);
-
+  const model = Event;
   it('should have name Event', () => expect(Event.name).toBe('Event'));
 
   describe('proprieties', () => {
     const attributes = [
       {
         name: 'id',
-        type: DataTypes.INTEGER,
+        type: 'INTEGER',
       },
       {
-        name: 'email_id',
-        type: DataTypes.INTEGER,
+        name: 'emailId',
+        type: 'INTEGER',
       },
       {
-        name: 'contact_id',
-        type: DataTypes.INTEGER,
+        name: 'contactId',
+        type: 'INTEGER',
       },
       {
-        name: 'event_type',
-        type: DataTypes.ENUM(
+        name: 'eventType',
+        type: 'ENUM',
+        values: [
           'reject',
           'bounce',
           'complaint',
@@ -33,22 +30,26 @@ describe('Models: Event', () => {
           'open',
           'click',
           'render_failure',
-        ),
+        ],
       },
       {
-        name: 'event_detail',
-        type: DataTypes.JSON,
+        name: 'eventDetails',
+        type: 'JSON',
       },
     ];
 
     attributes.map(({ name }) =>
       it(`should have an attribute '${name}'`, () =>
-        expect(model._defaults).toHaveProperty(name)),
+        expect(model.rawAttributes).toHaveProperty(name)),
     );
 
-    attributes.map(({ name, type }) =>
+    attributes.map(({ name, type, values }) =>
       it(`should have attribute '${name}' of type ${type}`, () =>
-        expect(model._defaults[name].type).toStrictEqual(type)),
+        expect(model.rawAttributes[name].type).toEqual(
+          expect.objectContaining(
+            values ? { key: type, values } : { key: type },
+          ),
+        )),
     );
   });
 });

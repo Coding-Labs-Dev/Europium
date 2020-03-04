@@ -5,16 +5,16 @@ module.exports = {
     queryInterface: QueryInterface,
     Sequelize: typeof DataTypes,
   ): Promise<void> => {
-    return queryInterface.createTable('ContactEmails', {
+    return queryInterface.createTable('ContactTags', {
       contactId: {
         type: Sequelize.INTEGER,
         references: { model: 'Contacts', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      emailId: {
+      tagId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Emails', key: 'id' },
+        references: { model: 'Tags', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
@@ -22,6 +22,6 @@ module.exports = {
   },
 
   down: (queryInterface: QueryInterface): Promise<void> => {
-    return queryInterface.dropTable('ContactEmails');
+    return queryInterface.dropTable('ContactTags');
   },
 };

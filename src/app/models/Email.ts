@@ -1,28 +1,25 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { Model, ModelCtor, DataTypes, BuildOptions } from 'sequelize';
+import {
+  Sequelize,
+  Model,
+  ModelCtor,
+  DataTypes,
+  BuildOptions,
+} from 'sequelize';
 
 interface EmailModel extends Model {
   readonly id: number;
   readonly sent: Date;
-  readonly template_id: number;
+  readonly templateId: number;
   readonly variables: string[];
-  readonly created_at: Date;
-  readonly updated_at: Date;
 }
 
 type EmailStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EmailModel;
+} & {
+  _defaults: { [key: string]: { [key: string]: object | string | boolean } };
 };
 
-export default class Email extends Model<EmailModel, EmailStatic> {
-  static associate(models: { [key: string]: ModelCtor<Model> }): void {
-    this.belongsTo(models.Template, {
-      foreignKey: 'template_id',
-    });
-  }
-}
-
-export const EmailAttributes = {
+const EmailAttributes = {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -33,7 +30,7 @@ export const EmailAttributes = {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  template_id: {
+  templateId: {
     type: DataTypes.INTEGER,
     references: { model: 'templates', key: 'id' },
     onUpdate: 'CASCADE',
@@ -44,4 +41,28 @@ export const EmailAttributes = {
     type: DataTypes.JSON,
     allowNull: true,
   },
+};
+
+export default class Email extends Model<EmailModel, EmailStatic> {}
+
+export const factory = (sequelize: Sequelize): void =>
+  Email.init(EmailAttributes, { sequelize });
+
+export const associate = (models: {
+  [key: string]: ModelCtor<Model>;
+}): void => {
+  Email.belongsTo(models.Template, {
+    foreignKey: 'templateId',
+    as: 'template',
+  });
+  Email.belongsToMany(models.Contact, {
+    through: 'ContactEmails',
+    foreignKey: 'contactId',
+    timestamps: false,
+    as: 'contacts',
+  });
+  Email.hasMany(models.Event, {
+    foreignKey: 'emailId',
+    as: 'events',
+  });
 };

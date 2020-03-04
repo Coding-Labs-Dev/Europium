@@ -1,46 +1,45 @@
-import SequelizeMock from 'sequelize-mock';
-import { DataTypes } from 'sequelize';
+import '@database/index';
 
-import Contact, { ContactAttributes } from '@models/Contact';
+import Contact from '@models/Contact';
 
 describe('Models: Contact', () => {
-  const sequelize = new SequelizeMock();
-  const model = sequelize.define(Contact.name, ContactAttributes);
-
+  const model = Contact;
   it('should have name Contact', () => expect(Contact.name).toBe('Contact'));
 
   describe('proprieties', () => {
     const attributes = [
       {
         name: 'id',
-        type: DataTypes.INTEGER,
+        type: 'INTEGER',
       },
       {
         name: 'name',
-        type: DataTypes.STRING,
+        type: 'STRING',
       },
       {
         name: 'email',
-        type: DataTypes.STRING,
+        type: 'STRING',
       },
       {
-        name: 'alternate_names',
-        type: DataTypes.JSON,
+        name: 'alternateNames',
+        type: 'JSON',
       },
       {
         name: 'active',
-        type: DataTypes.BOOLEAN,
+        type: 'BOOLEAN',
       },
     ];
 
     attributes.map(({ name }) =>
       it(`should have an attribute '${name}'`, () =>
-        expect(model._defaults).toHaveProperty(name)),
+        expect(model.rawAttributes).toHaveProperty(name)),
     );
 
     attributes.map(({ name, type }) =>
       it(`should have attribute '${name}' of type ${type}`, () =>
-        expect(model._defaults[name].type).toStrictEqual(type)),
+        expect(model.rawAttributes[name].type).toEqual(
+          expect.objectContaining({ key: type }),
+        )),
     );
   });
 });

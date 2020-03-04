@@ -1,11 +1,16 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { Model, DataTypes, BuildOptions } from 'sequelize';
+import {
+  Sequelize,
+  Model,
+  ModelCtor,
+  DataTypes,
+  BuildOptions,
+} from 'sequelize';
 
 interface EventModel extends Model {
   readonly id: number;
-  readonly email_id: number;
-  readonly contact_id: number;
-  readonly event_type:
+  readonly emailId: number;
+  readonly contactId: number;
+  readonly eventType:
     | 'reject'
     | 'bounce'
     | 'complaint'
@@ -13,41 +18,37 @@ interface EventModel extends Model {
     | 'open'
     | 'click'
     | 'render_failure';
-  readonly event_detail: object;
-  readonly created_at: Date;
-  readonly updated_at: Date;
+  readonly eventDetails: object;
 }
 
 type EventStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): EventModel;
+} & {
+  _defaults: { [key: string]: { [key: string]: object | string | boolean } };
 };
 
-export default class Event extends Model<EventModel, EventStatic> {
-  static associate?: () => void;
-}
-
-export const EventAttributes = {
+const EventAttributes = {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
-  email_id: {
+  emailId: {
     type: DataTypes.INTEGER,
-    references: { model: 'emails', key: 'id' },
+    references: { model: 'Emails', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,
   },
-  contact_id: {
+  contactId: {
     type: DataTypes.INTEGER,
-    references: { model: 'contacts', key: 'id' },
+    references: { model: 'Contacts', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,
   },
-  event_type: {
+  eventType: {
     type: DataTypes.ENUM(
       'reject',
       'bounce',
@@ -59,8 +60,26 @@ export const EventAttributes = {
     ),
     allowNull: false,
   },
-  event_detail: {
+  eventDetails: {
     type: DataTypes.JSON,
     allowNull: false,
   },
+};
+
+export default class Event extends Model<EventModel, EventStatic> {}
+
+export const factory = (sequelize: Sequelize): void =>
+  Event.init(EventAttributes, { sequelize });
+
+export const associate = (models: {
+  [key: string]: ModelCtor<Model>;
+}): void => {
+  Event.belongsTo(models.Email, {
+    foreignKey: 'emailId',
+    as: 'email',
+  });
+  Event.belongsTo(models.Contact, {
+    foreignKey: 'contactId',
+    as: 'contact',
+  });
 };

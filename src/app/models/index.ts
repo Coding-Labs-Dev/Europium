@@ -1,23 +1,5 @@
-import Template, { TemplateAttributes } from './Template';
-import Email, { EmailAttributes } from './Email';
-import Contact, { ContactAttributes } from './Contact';
-import Event, { EventAttributes } from './Event';
-
-export default [
-  {
-    model: Template,
-    attributes: TemplateAttributes,
-  },
-  {
-    model: Email,
-    attributes: EmailAttributes,
-  },
-  {
-    model: Contact,
-    attributes: ContactAttributes,
-  },
-  {
-    model: Event,
-    attributes: EventAttributes,
-  },
-];
+export { default as Contact } from './Contact';
+export { default as Tag } from './Tag';
+export { default as Event } from './Event';
+export { default as Template } from './Template';
+export { default as Email } from './Email';

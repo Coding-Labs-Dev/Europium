@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { QueryInterface, DataTypes } from 'sequelize';
 
 module.exports = {
@@ -6,7 +5,7 @@ module.exports = {
     queryInterface: QueryInterface,
     Sequelize: typeof DataTypes,
   ): Promise<void> => {
-    return queryInterface.createTable('contacts', {
+    return queryInterface.createTable('Contacts', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,7 +21,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      alternate_names: {
+      alternateNames: {
         type: Sequelize.JSON,
         allowNull: true,
       },
@@ -31,12 +30,12 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
-      created_at: { type: Sequelize.DATE, allowNull: false },
-      updated_at: { type: Sequelize.DATE, allowNull: false },
+      createdAt: { type: Sequelize.DATE, allowNull: false },
+      updatedAt: { type: Sequelize.DATE, allowNull: false },
     });
   },
 
   down: (queryInterface: QueryInterface): Promise<void> => {
-    return queryInterface.dropTable('contacts');
+    return queryInterface.dropTable('Contacts');
   },
 };

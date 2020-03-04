@@ -27,7 +27,7 @@ echo ""
 echo ""
 echo " -> Step 3/3: Starting migration."
 echo ""
-yarn sequelize db:migrate - env $ENVIRONMENT
+yarn cross-env NODE_ENV=$ENVIRONMENT sequelize db:migrate
 echo ""
 echo " -> Migration completed."
 echo ""

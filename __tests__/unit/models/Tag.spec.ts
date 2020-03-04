@@ -1,10 +1,9 @@
 import '@database/index';
 
-import Email from '@models/Email';
+import Tag from '@models/Tag';
 
-describe('Models: Email', () => {
-  it('should have name Email', () => expect(Email.name).toBe('Email'));
-
+describe('Models: Tag', () => {
+  const model = Tag;
   describe('proprieties', () => {
     const attributes = [
       {
@@ -12,27 +11,19 @@ describe('Models: Email', () => {
         type: 'INTEGER',
       },
       {
-        name: 'sent',
-        type: 'DATE',
-      },
-      {
-        name: 'templateId',
-        type: 'INTEGER',
-      },
-      {
-        name: 'variables',
-        type: 'JSON',
+        name: 'name',
+        type: 'STRING',
       },
     ];
 
     attributes.map(({ name }) =>
       it(`should have an attribute '${name}'`, () =>
-        expect(Email.rawAttributes).toHaveProperty(name)),
+        expect(model.rawAttributes).toHaveProperty(name)),
     );
 
     attributes.map(({ name, type }) =>
       it(`should have attribute '${name}' of type ${type}`, () =>
-        expect(Email.rawAttributes[name].type).toEqual(
+        expect(model.rawAttributes[name].type).toEqual(
           expect.objectContaining({ key: type }),
         )),
     );

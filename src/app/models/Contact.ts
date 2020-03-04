@@ -1,25 +1,26 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { Model, DataTypes, BuildOptions } from 'sequelize';
+import {
+  Sequelize,
+  Model,
+  ModelCtor,
+  DataTypes,
+  BuildOptions,
+} from 'sequelize';
 
 interface ContactModel extends Model {
   readonly id: number;
   readonly name: string | null;
   readonly email: string;
-  readonly alternate_names: string[] | null;
+  readonly alternateNames: string[] | null;
   readonly active: boolean;
-  readonly created_at: Date;
-  readonly updated_at: Date;
 }
 
 type ContactStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): ContactModel;
+} & {
+  _defaults: { [key: string]: { [key: string]: object | string | boolean } };
 };
 
-export default class Contact extends Model<ContactModel, ContactStatic> {
-  static associate?: () => void;
-}
-
-export const ContactAttributes = {
+const ContactAttributes = {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -35,7 +36,7 @@ export const ContactAttributes = {
     allowNull: false,
     unique: true,
   },
-  alternate_names: {
+  alternateNames: {
     type: DataTypes.JSON,
     allowNull: true,
   },
@@ -44,4 +45,26 @@ export const ContactAttributes = {
     allowNull: false,
     defaultValue: true,
   },
+};
+
+export default class Contact extends Model<ContactModel, ContactStatic> {}
+
+export const factory = (sequelize: Sequelize): void =>
+  Contact.init(ContactAttributes, { sequelize });
+
+export const associate = (models: {
+  [key: string]: ModelCtor<Model>;
+}): void => {
+  Contact.belongsToMany(models.Tag, {
+    through: 'ContactTags',
+    foreignKey: 'tagId',
+    timestamps: false,
+    as: 'tags',
+  });
+  Contact.belongsToMany(models.Email, {
+    through: 'ContactEmails',
+    foreignKey: 'emailId',
+    timestamps: false,
+    as: 'emails',
+  });
 };

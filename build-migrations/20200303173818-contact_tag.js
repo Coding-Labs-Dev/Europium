@@ -2,22 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable('ContactEmails', {
+        return queryInterface.createTable('ContactTags', {
             contactId: {
                 type: Sequelize.INTEGER,
                 references: { model: 'Contacts', key: 'id' },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
-            emailId: {
+            tagId: {
                 type: Sequelize.INTEGER,
-                references: { model: 'Emails', key: 'id' },
+                references: { model: 'Tags', key: 'id' },
                 onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
             },
         });
     },
     down: (queryInterface) => {
-        return queryInterface.dropTable('ContactEmails');
+        return queryInterface.dropTable('ContactTags');
     },
 };

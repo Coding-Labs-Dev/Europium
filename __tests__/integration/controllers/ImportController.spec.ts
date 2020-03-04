@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/camelcase */
+// @ts-nocheck
 import { Readable } from 'stream';
 import ImportContactService from '@services/ImportContactService';
 import Database from '@database/index';
-import Contact from '@models/Contact';
+import { Contact } from '@models/index';
 
 beforeAll(async () => {
-  await Database.sync({ force: true }).asCallback(() => {
-    console.log('======= DONE =======');
-  });
+  await Database.sync({ force: true, logging: false });
 });
+
+afterAll(async () => Database.close());
 
 describe('Import Controller: Store', () => {
   it('should be able to import and save a contact', async () => {
@@ -24,13 +25,17 @@ describe('Import Controller: Store', () => {
 
     await Contact.create(contacts[0]);
 
-    const contact = await Contact.findOne({ where: { id: 1 } });
+    const contact = await Contact.findOne({
+      where: { id: 1 },
+      // include: ['tags'],
+    });
 
     expect(contact).toEqual(
       expect.objectContaining({
-        email: 'crismari28@hotmail.com',
         name: 'Cristina',
-        alternate_names: [],
+        email: 'crismari28@hotmail.com',
+        alternateNames: [],
+        // tags: [],
       }),
     );
   });

@@ -24,31 +24,31 @@ describe('Import', () => {
         email: 'lukitalima7@gmail.com',
         name: '',
         tags: ['EMAIL LESTE EUROPEU'],
-        alternate_names: [],
+        alternateNames: [],
       }),
       expect.objectContaining({
         email: 'npetrulis@yahoo.com.br',
         name: 'N Pp',
         tags: ['EMAIL TRANSIBERIANO 2019'],
-        alternate_names: [],
+        alternateNames: [],
       }),
       expect.objectContaining({
         email: 'crismari28@hotmail.com',
         tags: ['E mails SITE BRASIL ORIENTE'],
-        alternate_names: [],
+        alternateNames: [],
         name: 'Cristina',
       }),
       expect.objectContaining({
         email: 'embaroni@bol.com.br',
         tags: ['BO 2014'],
-        alternate_names: [],
+        alternateNames: [],
         name: 'Eduardo Martins Mantovani Baroni',
       }),
       expect.objectContaining({
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2014', 'BO 2019'],
         name: 'Eunice de Fátima Chaves Figueiredo',
-        alternate_names: ['Eunice'],
+        alternateNames: ['Eunice'],
       }),
     ]);
   });
@@ -69,7 +69,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternate_names: [],
+        alternateNames: [],
       }),
     ]);
   });
@@ -90,7 +90,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternate_names: ['Eunice Faria'],
+        alternateNames: ['Eunice Faria'],
       }),
     ]);
   });
@@ -111,7 +111,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternate_names: [],
+        alternateNames: [],
       }),
     ]);
   });
@@ -132,7 +132,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternate_names: [],
+        alternateNames: [],
       }),
     ]);
   });
@@ -153,7 +153,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternate_names: [],
+        alternateNames: [],
       }),
     ]);
   });

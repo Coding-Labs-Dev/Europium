@@ -1,24 +1,23 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { Model, DataTypes, BuildOptions } from 'sequelize';
+import {
+  Sequelize,
+  Model,
+  ModelCtor,
+  DataTypes,
+  BuildOptions,
+} from 'sequelize';
 
 interface TemplateModel extends Model {
   readonly id: number;
   readonly name: string;
   readonly path: string;
   readonly variables: string[] | null;
-  readonly created_at: Date;
-  readonly updated_at: Date;
 }
 
 type TemplateStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): TemplateModel;
 };
 
-export default class Template extends Model<TemplateModel, TemplateStatic> {
-  static associate?: () => void;
-}
-
-export const TemplateAttributes = {
+const TemplateAttributes = {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -39,4 +38,18 @@ export const TemplateAttributes = {
     type: DataTypes.JSON,
     allowNull: true,
   },
+};
+
+export default class Template extends Model<TemplateModel, TemplateStatic> {}
+
+export const factory = (sequelize: Sequelize): void =>
+  Template.init(TemplateAttributes, { sequelize });
+
+export const associate = (models: {
+  [key: string]: ModelCtor<Model>;
+}): void => {
+  Template.hasMany(models.Email, {
+    foreignKey: 'templateId',
+    as: 'emails',
+  });
 };
