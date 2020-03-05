@@ -47,7 +47,9 @@ const ContactAttributes = {
   },
 };
 
-export default class Contact extends Model<ContactModel, ContactStatic> {}
+export default class Contact extends Model<ContactModel, ContactStatic> {
+  [x: string]: any;
+}
 
 export const factory = (sequelize: Sequelize): void =>
   Contact.init(ContactAttributes, { sequelize });
@@ -57,13 +59,13 @@ export const associate = (models: {
 }): void => {
   Contact.belongsToMany(models.Tag, {
     through: 'ContactTags',
-    foreignKey: 'tagId',
+    foreignKey: 'contactId',
     timestamps: false,
     as: 'tags',
   });
   Contact.belongsToMany(models.Email, {
     through: 'ContactEmails',
-    foreignKey: 'emailId',
+    foreignKey: 'contactId',
     timestamps: false,
     as: 'emails',
   });

@@ -22,26 +22,26 @@ describe('Import', () => {
     expect(contacts).toEqual([
       expect.objectContaining({
         email: 'lukitalima7@gmail.com',
-        name: '',
+        name: null,
         tags: ['EMAIL LESTE EUROPEU'],
-        alternateNames: [],
+        alternateNames: null,
       }),
       expect.objectContaining({
         email: 'npetrulis@yahoo.com.br',
         name: 'N Pp',
         tags: ['EMAIL TRANSIBERIANO 2019'],
-        alternateNames: [],
+        alternateNames: null,
       }),
       expect.objectContaining({
         email: 'crismari28@hotmail.com',
         tags: ['E mails SITE BRASIL ORIENTE'],
-        alternateNames: [],
+        alternateNames: null,
         name: 'Cristina',
       }),
       expect.objectContaining({
         email: 'embaroni@bol.com.br',
         tags: ['BO 2014'],
-        alternateNames: [],
+        alternateNames: null,
         name: 'Eduardo Martins Mantovani Baroni',
       }),
       expect.objectContaining({
@@ -69,7 +69,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternateNames: [],
+        alternateNames: null,
       }),
     ]);
   });
@@ -111,7 +111,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternateNames: [],
+        alternateNames: null,
       }),
     ]);
   });
@@ -132,7 +132,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternateNames: [],
+        alternateNames: null,
       }),
     ]);
   });
@@ -153,7 +153,7 @@ describe('Import', () => {
         email: 'eunicefcf@gmail.com',
         tags: ['BO 2019'],
         name: 'Eunice',
-        alternateNames: [],
+        alternateNames: null,
       }),
     ]);
   });
@@ -199,6 +199,31 @@ describe('Import', () => {
         origin: 'BO 2019',
         nameFromCSV: 'Eunice',
       }),
+    ]);
+  });
+  it('should return unique tags only', async () => {
+    const contactsFileStream = Readable.from([
+      'LUKITALIMA7@GMAIL.COM;EMAIL LESTE EUROPEU;\n',
+      'N pp <npetrulis@yahoo.com.br>;EMAIL TRANSIBERIANO 2019;\n',
+      'crismari28@hotmail.com;E mails SITE BRASIL ORIENTE;CRISTINA\n',
+      'embaroni@bol.com.br;BO 2014;EDUARDO MARTINS MANTOVANI BARONI\n',
+      'eunicefcf@gmail.com;BO 2014;EUNICE DE FÁTIMA CHAVES FIGUEIREDO\n',
+      'eunicefcf@gmail.com;BO 2019;Eunice\n',
+      'eunicefcf@gmail.com;;\n',
+    ]);
+
+    const importContacts = new ImportContactService();
+
+    await importContacts.run(contactsFileStream);
+
+    const { tags } = importContacts;
+
+    expect(tags).toEqual([
+      'EMAIL LESTE EUROPEU',
+      'EMAIL TRANSIBERIANO 2019',
+      'E mails SITE BRASIL ORIENTE',
+      'BO 2014',
+      'BO 2019',
     ]);
   });
 });

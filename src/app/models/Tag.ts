@@ -14,6 +14,8 @@ interface TagModel extends Model {
 type TagStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): TagModel;
 } & {
+  readonly id: number;
+  readonly name: string;
   _defaults: { [key: string]: { [key: string]: object | string | boolean } };
 };
 
@@ -27,6 +29,7 @@ export const TagAttributes = {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
 };
 
@@ -40,7 +43,7 @@ export const associate = (models: {
 }): void => {
   Tag.belongsToMany(models.Contact, {
     through: 'ContactTags',
-    foreignKey: 'contactId',
+    foreignKey: 'tagId',
     as: 'contacts',
     timestamps: false,
   });

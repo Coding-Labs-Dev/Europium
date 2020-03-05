@@ -32,7 +32,7 @@ const EmailAttributes = {
   },
   templateId: {
     type: DataTypes.INTEGER,
-    references: { model: 'templates', key: 'id' },
+    references: { model: 'Templates', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
     allowNull: false,

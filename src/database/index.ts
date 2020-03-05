@@ -48,7 +48,7 @@ class Database {
     this.init();
   }
 
-  init(): void {
+  async init(): Promise<void> {
     this.connection = new Sequelize(databaseConfig);
 
     models.forEach(model => model(this.connection));

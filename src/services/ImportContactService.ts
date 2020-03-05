@@ -11,6 +11,8 @@ export default class ImportContactService {
 
   invalid: Invalid;
 
+  tags: string[];
+
   readonly nameTester: RegExp;
 
   readonly emailTester: RegExp;
@@ -20,17 +22,29 @@ export default class ImportContactService {
     this.emails = [];
     this.duplicated = [];
     this.invalid = [];
+    this.tags = [];
 
     this.nameTester = /(?:"?([^"]*)"?\s)?(?:<?([a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)>?)/;
     this.emailTester = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
   }
 
-  getEmail(data: string): RegExpMatchArray | null {
-    return data.toLowerCase().match(this.emailTester);
+  getEmail(data: string): string | null {
+    const match = data.toLowerCase().match(this.emailTester);
+    if (match) return match[0];
+    return null;
   }
 
-  getName(data: string): RegExpMatchArray | null {
-    return data.match(this.nameTester);
+  getName(data: string): string | null {
+    const match = data.match(this.nameTester);
+    if (match) return match[1];
+    return null;
+  }
+
+  setName(data: string[]): string | null {
+    const [matchName, nameFromCSV] = data;
+    if (matchName && matchName.trim().length) return matchName.trim();
+    if (nameFromCSV && nameFromCSV.trim().length) return nameFromCSV.trim();
+    return null;
   }
 
   capitalize(data: string): string {
@@ -62,6 +76,10 @@ export default class ImportContactService {
     }
   }
 
+  addTag(data: string): void {
+    if (data.length && !this.tags.includes(data)) this.tags.push(data);
+  }
+
   async run(contactsFileStream: Readable): Promise<void> {
     const parser = csvParse({
       delimiter: ';',
@@ -73,15 +91,15 @@ export default class ImportContactService {
     parseCSV.on('data', line => {
       const { data, origin, nameFromCSV } = line;
 
-      const emailMatch = this.getEmail(data.trim());
+      const email = this.getEmail(data.trim());
       const nameMatch = this.getName(data.trim());
 
-      if (!emailMatch) return this.invalid.push(line);
+      if (!email) return this.invalid.push(line);
 
-      const email = emailMatch[0];
+      const name = this.setName([nameMatch, nameFromCSV]);
 
-      const name =
-        nameMatch && nameMatch[1] ? nameMatch[1].trim() : nameFromCSV.trim();
+      this.addTag(origin.trim());
+
       const tags = [origin.trim()];
 
       const position = this.checkIfExists(email);
@@ -95,23 +113,33 @@ export default class ImportContactService {
           tags: savedTags,
         } = this.contacts[position];
 
-        if (name.length && savedName !== name && !alternateNames.includes(name))
-          if (savedName === '') {
+        if (
+          name &&
+          savedName !== name &&
+          (!alternateNames || !alternateNames.includes(name))
+        ) {
+          if (!savedName) {
             this.contacts[position].name = this.capitalize(name);
           } else {
-            this.contacts[position].alternateNames.push(this.capitalize(name));
+            const altNames = this.contacts[position].alternateNames || [];
+            this.contacts[position].alternateNames = [
+              ...altNames,
+              this.capitalize(name),
+            ];
           }
+        }
         if (origin.length && !savedTags.includes(origin))
           this.contacts[position].tags.push(origin);
       } else {
         this.emails.push(email);
-        this.contacts.push({
+        return this.contacts.push({
           email,
-          name: name.length ? this.capitalize(name) : '',
+          name: name ? this.capitalize(name) : null,
           tags,
-          alternateNames: [],
+          alternateNames: null,
         });
       }
+      return null;
     });
 
     await new Promise(resolve => parseCSV.on('end', resolve));
@@ -120,8 +148,8 @@ export default class ImportContactService {
 
 type Contact = {
   email: string;
-  name?: string;
-  alternateNames: string[];
+  name: string | null;
+  alternateNames: string[] | null;
   tags: string[];
 };
 
