@@ -2,8 +2,9 @@
 import { Readable } from 'stream';
 import ImportContactService from '@services/ImportContactService';
 import Database from '@database/index';
-import { Contact, Tag } from '@models/index';
+import { Contact, Tag, ContactTag } from '@models/index';
 import Sequelize from 'sequelize';
+import { associate } from '@models/Contact';
 
 beforeAll(async () => {
   await Database.sync({ force: true, logging: false });
@@ -83,22 +84,77 @@ describe('Import Controller: Store', () => {
 
     expect(allTags).toEqual(expect.arrayContaining(expectedTags));
 
-    for (let i = 0; i < contacts.length; i += 1) {
-      const contactData = contacts[i];
+    const newContacts = await Contact.bulkCreate(
+      contacts.map(contact => {
+        const newContact = { ...contact };
+        delete newContact.tags;
+        return newContact;
+      }),
+    );
+
+    const expectedNewContacts = [
+      expect.objectContaining({
+        email: 'lukitalima7@gmail.com',
+        name: null,
+        active: true,
+        alternateNames: null,
+      }),
+      expect.objectContaining({
+        email: 'npetrulis@yahoo.com.br',
+        name: 'N Pp',
+        active: true,
+        alternateNames: null,
+      }),
+      expect.objectContaining({
+        email: 'crismari28@hotmail.com',
+        active: true,
+        alternateNames: null,
+        name: 'Cristina',
+      }),
+      expect.objectContaining({
+        email: 'embaroni@bol.com.br',
+        active: true,
+        alternateNames: null,
+        name: 'Eduardo Martins Mantovani Baroni',
+      }),
+      expect.objectContaining({
+        email: 'eunicefcf@gmail.com',
+        name: 'Eunice de Fátima Chaves Figueiredo',
+        active: true,
+        alternateNames: ['Eunice'],
+      }),
+    ];
+
+    expect(newContacts).toEqual(expectedNewContacts);
+
+    const associateData = [];
+
+    contacts.forEach(contact => {
+      const contactId = newContacts.filter(
+        ({ email }) => email === contact.email,
+      )[0].id;
       const tagsIds = allTags
-        .filter(({ name }) => contactData.tags.includes(name))
+        .filter(({ name }) => contact.tags.includes(name))
         .map(({ id }) => id);
 
-      delete contactData.tags;
-      const [contact] = await Contact.findOrCreate({
-        where: { email: contactData.email },
-        defaults: contactData,
-      });
+      const associationsData = tagsIds.map(tagId => ({ contactId, tagId }));
+      associationsData.forEach(item => associateData.push(item));
+    });
 
-      await contact.addTag(tagsIds);
-    }
+    const associations = await ContactTag.bulkCreate(associateData);
 
-    const newContacts = await Contact.findAll({
+    const expectAssociations = [
+      expect.objectContaining({ contactId: 1, tagId: 1 }),
+      expect.objectContaining({ contactId: 2, tagId: 2 }),
+      expect.objectContaining({ contactId: 3, tagId: 3 }),
+      expect.objectContaining({ contactId: 4, tagId: 4 }),
+      expect.objectContaining({ contactId: 5, tagId: 4 }),
+      expect.objectContaining({ contactId: 5, tagId: 5 }),
+    ];
+
+    expect(associations).toEqual(expectAssociations);
+
+    const updatedContacts = await Contact.findAll({
       include: ['tags'],
     });
 
@@ -145,6 +201,6 @@ describe('Import Controller: Store', () => {
       }),
     ];
 
-    expect(newContacts).toEqual(expectedContacts);
+    expect(updatedContacts).toEqual(expectedContacts);
   });
 });

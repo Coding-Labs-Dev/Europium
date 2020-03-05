@@ -26,12 +26,15 @@ import {
   associate as TemplateAssociate,
 } from '@models/Template';
 
+import { factory as ContactTagFactory } from '@models/ContactTag';
+
 const models = [
   ContactFactory,
   TagFactory,
   EmailFactory,
   EventFactory,
   TemplateFactory,
+  ContactTagFactory,
 ];
 const associates = [
   ContactAssociate,

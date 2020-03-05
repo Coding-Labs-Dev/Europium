@@ -33,7 +33,11 @@ export const TagAttributes = {
   },
 };
 
-export default class Tag extends Model<TagModel, TagStatic> {}
+export default class Tag extends Model<TagModel, TagStatic> {
+  readonly id: number;
+
+  readonly name: string;
+}
 
 export const factory = (sequelize: Sequelize): void =>
   Tag.init(TagAttributes, { sequelize });
