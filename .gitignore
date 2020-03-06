@@ -1,7 +1,9 @@
 
 # Application
 .env
-
+.env.development
+.env.test
+.env.local
 # Yarn
 node_modules
 yarn-error.log

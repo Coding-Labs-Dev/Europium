@@ -41,6 +41,7 @@
     "typescript": "^3.8.2"
   },
   "dependencies": {
+    "aws-sdk": "^2.633.0",
     "csv-parse": "^4.8.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
