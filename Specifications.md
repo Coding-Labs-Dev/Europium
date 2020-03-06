@@ -2,8 +2,8 @@
 
 ## Upload
 
-- [ ] System must upload files to a temp S3 Bucket
-- [ ] System must return path of the file
+- [x] System must upload files to a temp S3 Bucket
+- [x] System must return key of the file
 - [ ] Routes must send the path of the file to be processed
 - [ ] Services must delete files after processed
 - [x] Bucket must remove files after 7 days, then be removed permanently after 7 days

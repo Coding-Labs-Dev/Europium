@@ -1,1 +1,1 @@
-export { default as ImportController } from './ImportController';
+export { default as ImportController } from './ImportContactsController';

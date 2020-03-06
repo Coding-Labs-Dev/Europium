@@ -3,13 +3,13 @@ import dotenv from 'dotenv';
 import { Options } from 'sequelize';
 
 if (process.env.NODE_ENV !== 'production') {
+  const path = resolve(__dirname, '..', '..', '.env.');
+
   dotenv.config({
-    path: resolve(
-      __dirname,
-      '..',
-      '..',
-      `.env.${process.env.NODE_ENV || 'development'}`,
-    ),
+    path: resolve(`${path}${process.env.NODE_ENV || 'development'}`),
+  });
+  dotenv.config({
+    path: resolve(`${path}local`),
   });
 } else {
   dotenv.config();
