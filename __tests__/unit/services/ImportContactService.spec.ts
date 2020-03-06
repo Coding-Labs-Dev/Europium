@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import ImportContactService from '@services/ImportContactService';
 
-describe('Import', () => {
+describe('Import Contacts Service', () => {
   it('should be able to import contacts', async () => {
     const contactsFileStream = Readable.from([
       'LUKITALIMA7@GMAIL.COM;EMAIL LESTE EUROPEU;\n',

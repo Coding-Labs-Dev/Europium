@@ -18,10 +18,6 @@ describe('Models: Template', () => {
         type: 'STRING',
       },
       {
-        name: 'path',
-        type: 'STRING',
-      },
-      {
         name: 'variables',
         type: 'JSON',
       },

@@ -29,11 +29,6 @@ const TemplateAttributes = {
     allowNull: false,
     unique: true,
   },
-  path: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
   variables: {
     type: DataTypes.JSON,
     allowNull: true,
