@@ -80,10 +80,19 @@ export default class ImportContactService {
     if (data.length && !this.tags.includes(data)) this.tags.push(data);
   }
 
-  async run(contactsFileStream: Readable): Promise<void> {
+  async run(
+    input: string | Readable | Buffer | Uint8Array | Blob,
+  ): Promise<void> {
     const parser = csvParse({
       delimiter: ';',
       columns: ['data', 'origin', 'nameFromCSV'],
+    });
+
+    const contactsFileStream = new Readable({
+      read(): void {
+        this.push(input);
+        this.push(null);
+      },
     });
 
     const parseCSV = contactsFileStream.pipe(parser);
