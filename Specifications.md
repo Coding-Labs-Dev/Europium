@@ -4,13 +4,13 @@
 
 - [x] System must upload files to a temp S3 Bucket
 - [x] System must return key of the file
-- [ ] Routes must send the path of the file to be processed
-- [ ] Services must delete files after processed
+- [x] Routes must send the path of the file to be processed
+- [x] Services must delete files after processed
 - [x] Bucket must remove files after 7 days, then be removed permanently after 7 days
 
 ## Template
 
-- [ ] User can upload an HTML template
+- [x] User can upload an HTML template
 - [x] Template should be parsed to HTML
 - [x] Parsed template must be saved in AWS
 - [x] Template data must be saved in Database

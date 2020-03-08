@@ -2,8 +2,9 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 import UploadFileService from '@services/UploadFileService';
 
-import ImportContactsController from '@controllers/ImportContactsController';
 import UploadFileController from '@controllers/UploadFileController';
+import ImportContactsController from '@controllers/ImportContactsController';
+import TemplateController from '@controllers/TemplateController';
 
 function wrapper(
   fn: Function,
@@ -19,9 +20,11 @@ const routes = Router();
 routes.post(
   '/upload/:type',
   UploadFileService.single('file'),
-  UploadFileController.store,
+  wrapper(UploadFileController.store),
 );
 
 routes.post('/contacts/import', wrapper(ImportContactsController.store));
+
+routes.post('/templates/new', wrapper(TemplateController.store));
 
 export default routes;

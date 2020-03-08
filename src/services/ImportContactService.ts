@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Readable } from 'stream';
 import csvParse from 'csv-parse';
+import ToReadable from '@utils/ToReadable';
 
 export default class ImportContactService {
   contacts: Contact[];
@@ -88,12 +89,7 @@ export default class ImportContactService {
       columns: ['data', 'origin', 'nameFromCSV'],
     });
 
-    const contactsFileStream = new Readable({
-      read(): void {
-        this.push(input);
-        this.push(null);
-      },
-    });
+    const contactsFileStream = await ToReadable(input);
 
     const parseCSV = contactsFileStream.pipe(parser);
 

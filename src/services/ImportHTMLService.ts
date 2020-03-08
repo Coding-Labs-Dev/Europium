@@ -43,31 +43,18 @@ export default class ImportHTMLService {
   async createTemplate(
     data: TemplateType,
     variables: string[],
-  ): Promise<object> {
-    try {
-      const template = await Template.create({
-        name: data.TemplateName,
-        variables,
-      });
+  ): Promise<Template> {
+    const template = await Template.create({
+      name: data.TemplateName,
+      variables,
+    });
 
-      try {
-        await this.client.createTemplate({ Template: data }).promise();
-      } catch (error) {
-        await template.destroy();
-        return {
-          dbTemplate: true,
-          awsTemplate: false,
-        };
-      }
-      return {
-        dbTemplate: true,
-        awsTemplate: true,
-      };
+    try {
+      await this.client.createTemplate({ Template: data }).promise();
+      return template;
     } catch (error) {
-      return {
-        dbTemplate: false,
-        awsTemplate: false,
-      };
+      await template.destroy();
+      throw error;
     }
   }
 }

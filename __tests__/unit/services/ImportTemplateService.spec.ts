@@ -53,8 +53,7 @@ describe('Import Template Service', () => {
 
     expect(response).toEqual(
       expect.objectContaining({
-        dbTemplate: true,
-        awsTemplate: true,
+        name: 'TemplateTest',
       }),
     );
 
@@ -84,22 +83,14 @@ describe('Import Template Service', () => {
 
     const variables = ['name', 'href'];
 
-    const response = await importHTMLService.createTemplate(
-      TemplateData,
-      variables,
-    );
+    try {
+      await importHTMLService.createTemplate(TemplateData, variables);
+    } catch (error) {
+      const template = await Template.findOne({
+        where: { name: 'TemplateTest' },
+      });
 
-    expect(response).toEqual(
-      expect.objectContaining({
-        dbTemplate: true,
-        awsTemplate: false,
-      }),
-    );
-
-    const template = await Template.findOne({
-      where: { name: 'TemplateTest' },
-    });
-
-    expect(template).toBeNull();
+      expect(template).toBeNull();
+    }
   });
 });

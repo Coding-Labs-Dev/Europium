@@ -4,7 +4,6 @@ import ImportContactService from '@services/ImportContactService';
 import Database from '@database/index';
 import { Contact, Tag, ContactTag } from '@models/index';
 import Sequelize from 'sequelize';
-import { associate } from '@models/Contact';
 
 beforeAll(async () => {
   await Database.sync({ force: true, logging: false });
