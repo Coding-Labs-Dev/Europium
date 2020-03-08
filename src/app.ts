@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import routes from './routes';
+import HttpExceptionHandler from './app/middlewares/HttpExceptionMiddleware';
 
 import './database';
 
@@ -11,6 +12,7 @@ class App {
 
     this.middlewares();
     this.routes();
+    this.globalEHandler();
   }
 
   middlewares(): void {
@@ -19,6 +21,10 @@ class App {
 
   routes(): void {
     this.server.use(routes);
+  }
+
+  globalEHandler(): void {
+    this.server.use(HttpExceptionHandler);
   }
 }
 
