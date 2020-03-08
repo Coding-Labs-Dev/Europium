@@ -54,6 +54,9 @@ describe('Import Template Service', () => {
     expect(response).toEqual(
       expect.objectContaining({
         name: 'TemplateTest',
+        text: null,
+        html: '<HTML>',
+        subject: 'Test subject',
       }),
     );
 
@@ -64,6 +67,9 @@ describe('Import Template Service', () => {
     expect(template).toEqual(
       expect.objectContaining({
         name: 'TemplateTest',
+        text: null,
+        html: '<HTML>',
+        subject: 'Test subject',
       }),
     );
   });

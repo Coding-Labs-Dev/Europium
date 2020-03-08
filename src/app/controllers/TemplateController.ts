@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import S3 from 'aws-sdk/clients/s3';
 import ImportHTMLService from '@services/ImportHTMLService';
 import ToReadable from '@utils/ToReadable';
-import { Template } from 'aws-sdk/clients/ses';
+import { Template as TemplateType } from 'aws-sdk/clients/ses';
+import { Template } from '@models/index';
 
 const s3 = new S3({ region: 'us-east-1' });
 
@@ -43,7 +44,7 @@ class TemplateController {
 
     const { name, subject, textVersion, variables } = template;
 
-    const templateData: Template = {
+    const templateData: TemplateType = {
       TemplateName: name,
       HtmlPart: parsedHTML.toString(),
       TextPart: textVersion,
@@ -56,6 +57,18 @@ class TemplateController {
     );
 
     return res.status(204).json(result);
+  }
+
+  async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const template = await Template.findByPk(id);
+
+    if (!template)
+      return res
+        .status(404)
+        .json({ error: { message: 'Template not found in database' } });
+
+    return res.json(template);
   }
 }
 

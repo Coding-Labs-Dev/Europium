@@ -46,6 +46,9 @@ export default class ImportHTMLService {
   ): Promise<Template> {
     const template = await Template.create({
       name: data.TemplateName,
+      subject: data.SubjectPart,
+      text: data.TextPart,
+      html: data.HtmlPart,
       variables,
     });
 

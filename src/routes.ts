@@ -26,5 +26,6 @@ routes.post(
 routes.post('/contacts/import', wrapper(ImportContactsController.store));
 
 routes.post('/templates/new', wrapper(TemplateController.store));
+routes.get('/templates/:id', wrapper(TemplateController.show));
 
 export default routes;

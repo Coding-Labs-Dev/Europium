@@ -9,7 +9,9 @@ import {
 interface TemplateModel extends Model {
   readonly id: number;
   readonly name: string;
-  readonly path: string;
+  readonly subject: string;
+  readonly text: string | null;
+  readonly html: string;
   readonly variables: string[] | null;
 }
 
@@ -29,13 +31,37 @@ const TemplateAttributes = {
     allowNull: false,
     unique: true,
   },
+  subject: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  text: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  html: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   variables: {
     type: DataTypes.JSON,
     allowNull: true,
   },
 };
 
-export default class Template extends Model<TemplateModel, TemplateStatic> {}
+export default class Template extends Model<TemplateModel, TemplateStatic> {
+  readonly id: number;
+
+  readonly name: string;
+
+  readonly subject: string;
+
+  readonly text: string | null;
+
+  readonly html: string;
+
+  readonly variables: string[] | null;
+}
 
 export const factory = (sequelize: Sequelize): void =>
   Template.init(TemplateAttributes, { sequelize });
