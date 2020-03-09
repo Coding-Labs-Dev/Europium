@@ -1,12 +1,25 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import * as yup from 'yup';
+
+/**
+ * Middlewares
+ */
 
 import UploadFileMiddleware from '@middlewares/UploadFileMiddleware';
 import ValidatorMiddleware from '@middlewares/ValidatorMiddleware';
 
+/**
+ * Controllers
+ */
+
 import UploadFileController from '@controllers/UploadFileController';
 import ImportContactsController from '@controllers/ImportContactsController';
 import TemplateController from '@controllers/TemplateController';
+
+/**
+ * Validators
+ */
+
+import UploadValidator from '@validators/UploadValidator';
 
 function wrapper(
   fn: Function,
@@ -17,19 +30,11 @@ function wrapper(
   return wrapperFn;
 }
 
-const validationSchema = yup.object().shape({
-  id: yup
-    .string()
-    .email()
-    .required(),
-  // .required(),
-  name: yup.string().required(),
-});
-
 const routes = Router();
 
 routes.post(
   '/upload/:type',
+  ValidatorMiddleware(UploadValidator),
   UploadFileMiddleware.single('file'),
   wrapper(UploadFileController.store),
 );
@@ -37,10 +42,6 @@ routes.post(
 routes.post('/contacts/import', wrapper(ImportContactsController.store));
 
 routes.post('/templates', wrapper(TemplateController.store));
-routes.get(
-  '/templates/:id',
-  ValidatorMiddleware(validationSchema),
-  wrapper(TemplateController.show),
-);
+routes.get('/templates/:id', wrapper(TemplateController.show));
 
 export default routes;

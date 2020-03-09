@@ -23,9 +23,9 @@
       "@database/*": ["./src/database/*"],
       "@middlewares/*": ["./src/app/middlewares/*"],
       "@controllers/*": ["./src/app/controllers/*"],
+      "@validators/*": ["./src/app/validators/*"],
       "@services/*": ["./src/services/*"],
       "@models/*": ["./src/app/models/*"],
-      "@queues/*": ["./src/queues/*"],
       "@utils/*": ["./src/utils/*"]
     }
   },

@@ -2,6 +2,11 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import * as yup from 'yup';
 import { ValidationError } from 'yup';
 
+interface ValidationShchema {
+  params?: yup.Schema<object>;
+  body?: yup.Schema<object>;
+}
+
 export function validateErrorFormater(error: ValidationError): object {
   return {
     name: 'ValidationError',
@@ -15,19 +20,35 @@ export function validateErrorFormater(error: ValidationError): object {
 }
 
 export default function Validator(
-  validationSchema: yup.Schema<object>,
+  validationSchema: ValidationShchema,
 ): RequestHandler {
   const validate = async (
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const { body } = req;
+    const { params: paramsData, body: bodyData } = req;
 
-    validationSchema
-      .validate(body, { abortEarly: false })
-      .then(() => next())
-      .catch(error => next(validateErrorFormater(error)));
+    const { params, body } = validationSchema;
+
+    if (params) {
+      params
+        .validate(paramsData, { abortEarly: false })
+        .then(() => !body && next())
+        .catch(error => next(validateErrorFormater(error)));
+      if (!body) return undefined;
+    }
+    if (body) {
+      return body
+        .validate(bodyData, { abortEarly: false })
+        .then(() => next())
+        .catch(error => next(validateErrorFormater(error)));
+    }
+    return next({
+      name: 'ServerError',
+      statusCode: 500,
+      message: 'Invalid Validation Schema',
+    });
   };
   return validate;
 }

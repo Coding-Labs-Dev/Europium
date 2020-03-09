@@ -4,7 +4,7 @@
 
 ### System
 
-- [ ] Add validation to routes params/body
+- [x] Add validation to routes params/body
 
 ### Upload
 
