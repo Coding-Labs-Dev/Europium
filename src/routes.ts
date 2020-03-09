@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
-import UploadFileService from '@services/UploadFileService';
+import UploadFileMiddleware from '@middlewares/UploadFileMiddleware';
 
 import UploadFileController from '@controllers/UploadFileController';
 import ImportContactsController from '@controllers/ImportContactsController';
@@ -19,13 +19,13 @@ const routes = Router();
 
 routes.post(
   '/upload/:type',
-  UploadFileService.single('file'),
+  UploadFileMiddleware.single('file'),
   wrapper(UploadFileController.store),
 );
 
 routes.post('/contacts/import', wrapper(ImportContactsController.store));
 
-routes.post('/templates/new', wrapper(TemplateController.store));
+routes.post('/templates', wrapper(TemplateController.store));
 routes.get('/templates/:id', wrapper(TemplateController.show));
 
 export default routes;

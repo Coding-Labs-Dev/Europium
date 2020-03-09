@@ -21,6 +21,7 @@
       "@types/*": ["./src/@types/*"],
       "@config/*": ["./src/config/*"],
       "@database/*": ["./src/database/*"],
+      "@middlewares/*": ["./src/app/middlewares/*"],
       "@controllers/*": ["./src/app/controllers/*"],
       "@services/*": ["./src/services/*"],
       "@models/*": ["./src/app/models/*"],

@@ -16,16 +16,16 @@ describe('Export', () => {
       {
         email: 'crismari28@hotmail.com',
         name: 'Cristina',
-        tags: ['E mails SITE BRASIL ORIENTE'],
+        tags: ['E mails SITE BRASIL ORIENTE', 'Tag 2'],
       },
       {
         email: 'embaroni@bol.com.br',
         name: 'Eduardo Martins Mantovani Baroni',
-        tags: ['BO 2014'],
       },
       {
         email: 'eunicefcf@gmail.com',
         name: 'Eunice de Fátima Chaves Figueiredo',
+        altNames: ['Name 2'],
         tags: ['BO 2014'],
       },
     ];
@@ -35,7 +35,7 @@ describe('Export', () => {
 
     expect(csv).toEqual(
       expect.stringMatching(
-        'email;name;tags;altNames\nlukitalima7@gmail.com;;EMAIL LESTE EUROPEU;\nnpetrulis@yahoo.com.br;N Pp;EMAIL TRANSIBERIANO 2019;\ncrismari28@hotmail.com;Cristina;E mails SITE BRASIL ORIENTE;\nembaroni@bol.com.br;Eduardo Martins Mantovani Baroni;BO 2014;\neunicefcf@gmail.com;Eunice de Fátima Chaves Figueiredo;BO 2014',
+        'email;name;tags;altNames\nlukitalima7@gmail.com;;EMAIL LESTE EUROPEU;\nnpetrulis@yahoo.com.br;N Pp;EMAIL TRANSIBERIANO 2019;\ncrismari28@hotmail.com;Cristina;E mails SITE BRASIL ORIENTE, Tag 2;\nembaroni@bol.com.br;Eduardo Martins Mantovani Baroni;;\neunicefcf@gmail.com;Eunice de Fátima Chaves Figueiredo;BO 2014;Name 2',
       ),
     );
   });

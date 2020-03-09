@@ -6,7 +6,7 @@ async function errorMiddleware(
   error: HTTPError,
   request: Request,
   response: Response,
-  next: NextFunction,
+  next: NextFunction | undefined,
 ): Promise<Response> {
   const youch = new Youch(error, request);
 

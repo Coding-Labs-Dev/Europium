@@ -1,12 +1,9 @@
-import { Readable } from 'stream';
 import { Request, Response } from 'express';
-import S3 from 'aws-sdk/clients/s3';
 import ImportHTMLService from '@services/ImportHTMLService';
 import ToReadable from '@utils/ToReadable';
 import { Template as TemplateType } from 'aws-sdk/clients/ses';
-import { Template } from '@models/index';
-
-const s3 = new S3({ region: 'us-east-1' });
+import Template from '@models/Template';
+import { getFile, deleteFile } from '@utils/File';
 
 class TemplateController {
   async store(req: Request, res: Response): Promise<Response> {
@@ -14,24 +11,8 @@ class TemplateController {
 
     const { fileKey, template } = req.body;
 
-    const file = await s3
-      .getObject({
-        Bucket: process.env.S3_BUCKET,
-        Key: fileKey,
-      })
-      .promise();
-
-    const data = file.Body as Buffer | Uint8Array | Blob | string | Readable;
-
-    await s3
-      .deleteObject({
-        Bucket: process.env.S3_BUCKET,
-        Key: fileKey,
-      })
-      .promise();
-
-    if (!data)
-      return res.status(400).json({ error: { message: `Empty file` } });
+    const data = await getFile(fileKey);
+    await deleteFile(fileKey);
 
     const readable = await ToReadable(data);
 
@@ -42,12 +23,12 @@ class TemplateController {
     if (!parsedHTML)
       return res.status(400).json({ error: { message: 'Invalid HTML file' } });
 
-    const { name, subject, textVersion, variables } = template;
+    const { name, subject, text, variables } = template;
 
     const templateData: TemplateType = {
       TemplateName: name,
       HtmlPart: parsedHTML.toString(),
-      TextPart: textVersion,
+      TextPart: text,
       SubjectPart: subject,
     };
 

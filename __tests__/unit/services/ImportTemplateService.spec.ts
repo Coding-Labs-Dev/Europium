@@ -1,23 +1,20 @@
 import AWS from 'aws-sdk-mock';
-import Database from '@database/index';
 import { Template } from '@models/index';
 import { resolve } from 'path';
 import { Readable } from 'stream';
 import ImportHTMLService from '@services/ImportHTMLService';
 import { Template as TemplateModel } from 'aws-sdk/clients/ses';
+import Database from '../../utils/Database';
 
 AWS.setSDK(resolve(__dirname, '..', '..', '..', 'node_modules', 'aws-sdk'));
 
 beforeAll(async () => {
-  await Database.sync({ force: true, logging: false });
+  await Database.getInstance();
 });
 
-afterAll(async () => Database.close());
-
 describe('Import Template Service', () => {
-  beforeEach(() => AWS.restore());
-
   it('should be able to parse an HTML template', async () => {
+    await Database.truncate('Template');
     const data = Readable.from([
       `<html><head><title>Template</title></head><body><h1>Hello {{name}}! This is a minified <a href="{{href}}">tempalte</a></h1></body></html>`,
     ]);
@@ -34,6 +31,7 @@ describe('Import Template Service', () => {
   });
 
   it('should be able to create a new template in AWS and database', async () => {
+    await Database.truncate('Template');
     AWS.mock('SES', 'createTemplate', () => Promise.resolve(true));
 
     const importHTMLService = new ImportHTMLService();
@@ -74,7 +72,7 @@ describe('Import Template Service', () => {
     );
   });
   it('should delete a template from database if there is an AWS error when creating a new template', async () => {
-    await Database.sync({ force: true, logging: false });
+    await Database.truncate('Template');
     AWS.mock('SES', 'createTemplate', () =>
       Promise.reject(new Error('Error from SES')),
     );

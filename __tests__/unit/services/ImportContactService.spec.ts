@@ -10,6 +10,7 @@ describe('Import Contacts Service', () => {
       'embaroni@bol.com.br;BO 2014;EDUARDO MARTINS MANTOVANI BARONI\n',
       'eunicefcf@gmail.com;BO 2014;EUNICE DE FÁTIMA CHAVES FIGUEIREDO\n',
       'eunicefcf@gmail.com;BO 2019;Eunice\n',
+      'eunicefcf@gmail.com;BO 2019;Eunice\n',
       'eunicefcf@gmail.com;;\n',
     ]);
 

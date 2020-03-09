@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 const S3 = new AWS.S3({ region: 'us-east-1' });
 
 const getStorage = (): multer.StorageEngine => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     return multer.diskStorage({
       destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
       filename: (req, file, callback) => {

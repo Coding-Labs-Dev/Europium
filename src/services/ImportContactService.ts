@@ -49,7 +49,6 @@ export default class ImportContactService {
   }
 
   capitalize(data: string): string {
-    if (!data.length) return data;
     return data
       .toLocaleLowerCase()
       .split(' ')

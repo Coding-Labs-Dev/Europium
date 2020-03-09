@@ -484,6 +484,14 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
   integrity sha512-FwI9gX75FgVBJ7ywgnq/P7tw+/o1GUbtP0KzbtusLigAOgIgNISRK0ZPl4qertvXSIE8YbsVJueQ90cDt9YYyw==
 
+"@types/mock-req-res@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/mock-req-res/-/mock-req-res-1.1.0.tgz#8ce7732029be9b9ca6cea921f896312f743490ec"
+  integrity sha512-bKq1wdSJrGf3Wm7nWTBAhOhVxwNk0pJ/lNIiwDMGfqY8sdPz0tGzbHia3U0psRK/BheWobKzM226GdZpbS5j/w==
+  dependencies:
+    "@types/express" "*"
+    "@types/sinon" "*"
+
 "@types/multer-s3@^2.7.7":
   version "2.7.7"
   resolved "https://registry.yarnpkg.com/@types/multer-s3/-/multer-s3-2.7.7.tgz#36acad009726377b2b85116a0fe2d37cd569cb45"
@@ -526,6 +534,11 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
+
+"@types/sinon@*":
+  version "7.5.2"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.5.2.tgz#5e2f1d120f07b9cda07e5dedd4f3bf8888fccdb9"
+  integrity sha512-T+m89VdXj/eidZyejvmoP9jivXgBDdkOSBVQjU9kF349NEx10QdPNGxHeZUaj1IlJ32/ewdyXJjnJxyxJroYwg==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3772,6 +3785,11 @@ mkdirp@0.x, mkdirp@^0.5.1, mkdirp@~0.5.1:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+mock-req-res@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/mock-req-res/-/mock-req-res-1.1.4.tgz#d2a94ae27910bae3ff032b5cd91153a1dc6522bc"
+  integrity sha512-riG06oeC0eMDZlCNDCH42N9jRq4NiFsNri47v0rDZujm26AfAlHyAu89NXfFVnphiCeo3IZmfIv9j46MLEV8Nw==
 
 module-not-found-error@^1.0.1:
   version "1.0.1"

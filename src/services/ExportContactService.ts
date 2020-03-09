@@ -5,7 +5,7 @@ export default class ExportContactService {
     return data.map(item => ({
       ...item,
       altNames: item.altNames?.join(', ') || '',
-      tags: item.tags?.join(', '),
+      tags: item.tags?.join(', ') || '',
     }));
   }
 
@@ -16,11 +16,7 @@ export default class ExportContactService {
       delimiter: {
         field: ';',
       },
-    })
-      .then(csv => csv)
-      .catch(err => {
-        throw new Error(err);
-      });
+    }).then(csv => csv);
   }
 }
 
