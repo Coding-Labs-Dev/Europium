@@ -21,6 +21,7 @@ import TemplateController from '@controllers/TemplateController';
 
 import UploadValidator from '@validators/UploadValidator';
 import ImportContactsValidator from '@validators/ImportContactsValidator';
+import TemplateControllerValidator from '@validators/TemplateControllerValidator';
 
 function wrapper(
   fn: Function,
@@ -46,7 +47,15 @@ routes.post(
   wrapper(ImportContactsController.store),
 );
 
-routes.post('/templates', wrapper(TemplateController.store));
-routes.get('/templates/:id', wrapper(TemplateController.show));
+routes.post(
+  '/templates',
+  ValidatorMiddleware(TemplateControllerValidator.store),
+  wrapper(TemplateController.store),
+);
+routes.get(
+  '/templates/:id',
+  ValidatorMiddleware(TemplateControllerValidator.show),
+  wrapper(TemplateController.show),
+);
 
 export default routes;
