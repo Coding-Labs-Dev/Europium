@@ -14,9 +14,16 @@ module.exports = {
                 unique: true,
                 allowNull: false,
             },
-            path: {
+            subject: {
                 type: Sequelize.STRING,
-                unique: true,
+                allowNull: false,
+            },
+            text: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
+            html: {
+                type: Sequelize.STRING,
                 allowNull: false,
             },
             variables: {

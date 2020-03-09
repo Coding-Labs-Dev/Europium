@@ -37,6 +37,10 @@ const EmailAttributes = {
     onDelete: 'SET NULL',
     allowNull: false,
   },
+  subject: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   variables: {
     type: DataTypes.JSON,
     allowNull: true,

@@ -11,9 +11,7 @@ echo ""
 
 echo " -> Step 1/3: Compiling migration scripts."
 echo ""
-for filename in ./src/database/migrations/*.ts; do
- yarn tsc -t es2017 -module CommonJS -outDir ./build-migrations $filename
-done
+ yarn tsc -p ./src/database/migrations/tsconfig.json
 echo ""
 echo " -> Compilation completed."
 echo ""
