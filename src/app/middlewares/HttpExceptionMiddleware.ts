@@ -8,13 +8,21 @@ async function errorMiddleware(
   response: Response,
   next: NextFunction | undefined,
 ): Promise<Response> {
-  const youch = new Youch(error, request);
-
-  const errorJSON = await youch.toJSON();
+  if (error.name === 'ValidationError')
+    return response.status(error.statusCode || 400).json({
+      error: {
+        message: 'Validation Error',
+        fields: error.fields,
+      },
+    });
 
   if (process.env.NODE_ENV !== 'production') {
+    const youch = new Youch(error, request);
+
+    const errorJSON = await youch.toJSON();
     return response.status(error.statusCode || 500).json(errorJSON);
   }
+
   return response.status(error.statusCode || 500).send();
 }
 

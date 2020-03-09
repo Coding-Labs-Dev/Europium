@@ -2,6 +2,10 @@
 
 ## Specifications
 
+### System
+
+- [ ] Add validation to routes params/body
+
 ### Upload
 
 - [x] System must upload files to a temp S3 Bucket
