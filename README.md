@@ -23,12 +23,12 @@
 
 ### E-mail
 
-- [ ] User can define a new e-mail
-- [ ] User must select a template to use in the new e-mail
-- [ ] User must add a subject to the e-mail
-- [ ] User must add contacts to send the e-mail to
-- [ ] User must map variables from template to contact data
-- [ ] E-mail sending must use a queue system (Bull/Redis/SQS)
+- [x] User can define a new e-mail
+- [x] User must select a template to use in the new e-mail
+- [x] User must add a subject to the e-mail
+- [x] User must add contacts to send the e-mail to
+- [x] User must map variables from template to contact data
+- [-] E-mail sending must use a queue system (Bull/Redis/SQS)
 
 ### Events
 

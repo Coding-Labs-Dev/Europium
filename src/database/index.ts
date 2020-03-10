@@ -27,6 +27,7 @@ import {
 } from '@models/Template';
 
 import { factory as ContactTagFactory } from '@models/ContactTag';
+import { factory as ContactEmailFactory } from '@models/ContactEmail';
 
 const models = [
   ContactFactory,
@@ -35,7 +36,9 @@ const models = [
   EventFactory,
   TemplateFactory,
   ContactTagFactory,
+  ContactEmailFactory,
 ];
+
 const associates = [
   ContactAssociate,
   TagAssociate,

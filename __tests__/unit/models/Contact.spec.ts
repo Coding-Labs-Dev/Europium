@@ -1,8 +1,15 @@
-import '@database/index';
-
 import Contact from '@models/Contact';
+import Database from '../../utils/Database';
 
 describe('Models: Contact', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+
+  afterAll(async () => {
+    await Database.close();
+  });
+
   const model = Contact;
   it('should have name Contact', () => expect(Contact.name).toBe('Contact'));
 

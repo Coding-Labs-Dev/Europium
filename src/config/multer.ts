@@ -40,6 +40,7 @@ const getStorage = (): multer.StorageEngine => {
       const filename = `${uuid()}${extname(file.originalname)}`;
       const { type } = req.params;
       if (type === 'template') return cb(null, `tmp/templates/${filename}`);
+      if (type === 'contact') return cb(null, `tmp/contacts/${filename}`);
       return cb('Invalid reques type');
     },
   });

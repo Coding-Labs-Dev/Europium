@@ -29,6 +29,7 @@ async function errorMiddleware(
 interface HTTPError extends Errback {
   statusCode?: number;
   message?: string;
+  fields?: object[];
 }
 
 export default errorMiddleware;

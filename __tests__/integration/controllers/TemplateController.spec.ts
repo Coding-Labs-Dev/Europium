@@ -25,11 +25,15 @@ describe('Controller: Template', () => {
     });
   });
 
-  beforeEach(async () => Database.truncate('Template'));
-
   afterAll(async () => {
     if (fs.existsSync(resolve(process.cwd(), 'tmp', '__TEST__.html')))
       fs.unlinkSync(resolve(process.cwd(), 'tmp', '__TEST__.html'));
+
+    await Database.close();
+  });
+
+  beforeEach(async () => {
+    await Database.truncate('Template');
   });
 
   it('should be able to save a template', async () => {
@@ -91,22 +95,6 @@ describe('Controller: Template', () => {
           '<html><head><title>Hello World</title></head><body><h1>Hello {{name}}</h1></body></html>',
         text: 'TextPart',
         variables: ['name'],
-      }),
-    );
-  });
-
-  it('should return 404 if no template is found', async () => {
-    const request = mockRequest({ params: { id: 999 } });
-    const response = mockResponse();
-    jest.spyOn(response, 'json');
-
-    await TemplateController.show(request, response);
-
-    expect(response.json).toHaveBeenCalledWith(
-      expect.objectContaining({
-        error: {
-          message: 'Template not found in database',
-        },
       }),
     );
   });

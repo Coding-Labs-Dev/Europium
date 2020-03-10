@@ -1,8 +1,15 @@
-import '@database/index';
-
 import Email from '@models/Email';
+import Database from '../../utils/Database';
 
 describe('Models: Email', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+
+  afterAll(async () => {
+    await Database.close();
+  });
+
   it('should have name Email', () => expect(Email.name).toBe('Email'));
 
   describe('proprieties', () => {
@@ -10,6 +17,14 @@ describe('Models: Email', () => {
       {
         name: 'id',
         type: 'INTEGER',
+      },
+      {
+        name: 'name',
+        type: 'STRING',
+      },
+      {
+        name: 'subject',
+        type: 'STRING',
       },
       {
         name: 'sent',

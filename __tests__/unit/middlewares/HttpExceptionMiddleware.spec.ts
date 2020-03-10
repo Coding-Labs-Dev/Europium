@@ -5,6 +5,7 @@ import { mockResponse, mockRequest } from 'mock-req-res';
 interface HTTPError extends Errback {
   statusCode?: number;
   message?: string;
+  fields?: object[];
 }
 
 describe('Middleware: HTTP Exception', () => {

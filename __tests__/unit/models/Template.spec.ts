@@ -1,8 +1,15 @@
-import '@database/index';
-
 import Template from '@models/Template';
+import Database from '../../utils/Database';
 
 describe('Models: Template', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+
+  afterAll(async () => {
+    await Database.close();
+  });
+
   const model = Template;
 
   it('should have name Template', () => expect(Template.name).toBe('Template'));

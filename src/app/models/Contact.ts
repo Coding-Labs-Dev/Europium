@@ -6,13 +6,15 @@ import {
   BuildOptions,
 } from 'sequelize';
 
-interface ContactModel extends Model {
+export interface ContactAttributes {
   readonly id: number;
   readonly name: string | null;
   readonly email: string;
   readonly alternateNames: string[] | null;
   readonly active: boolean;
 }
+
+type ContactModel = Model & ContactAttributes;
 
 type ContactStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): ContactModel;
@@ -48,7 +50,15 @@ const ContactAttributes = {
 };
 
 export default class Contact extends Model<ContactModel, ContactStatic> {
-  [x: string]: any;
+  readonly id: number;
+
+  readonly name: string | null;
+
+  readonly email: string;
+
+  readonly alternateNames: string[] | null;
+
+  readonly active: boolean;
 }
 
 export const factory = (sequelize: Sequelize): void =>

@@ -33,6 +33,7 @@ class ImportController {
         delete newContact.tags;
         return newContact;
       }),
+      { ignoreDuplicates: true },
     );
 
     const associateData: { contactId: number; tagId: number }[] = [];

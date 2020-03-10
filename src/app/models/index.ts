@@ -4,3 +4,4 @@ export { default as Event } from './Event';
 export { default as Template } from './Template';
 export { default as Email } from './Email';
 export { default as ContactTag } from './ContactTag';
+export { default as ContactEmail } from './ContactEmail';

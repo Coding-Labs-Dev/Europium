@@ -4,39 +4,39 @@ import ImportController from '@controllers/ImportContactsController';
 import { mockRequest, mockResponse } from 'mock-req-res';
 import Database from '../../utils/Database';
 
-beforeAll(async () => {
-  await Database.getInstance();
-});
+describe('Import Controller: Store', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
 
-// afterAll(async () => Database.close());
+  afterAll(async () => {
+    await Database.close();
+  });
 
-beforeEach(async () => {
-  await Database.truncate('Contact');
-
-  const fileData = [
-    'LUKITALIMA7@GMAIL.COM;EMAIL LESTE EUROPEU;\n',
-    'N pp <npetrulis@yahoo.com.br>;EMAIL TRANSIBERIANO 2019;\n',
-    'crismari28@hotmail.com;E mails SITE BRASIL ORIENTE;CRISTINA\n',
-    'embaroni@bol.com.br;BO 2014;EDUARDO MARTINS MANTOVANI BARONI\n',
-    'eunicefcf@gmail.com;BO 2014;EUNICE DE FÁTIMA CHAVES FIGUEIREDO\n',
-    'eunicefcf@gmail.com;BO 2019;Eunice\n',
-    'eunicefcf@gmail.com;BO 2019;Eunice\n',
-    'eunicefcf@gmail.com;;\n',
-  ];
-  fileData.forEach((line, i) => {
-    fs.writeFileSync(resolve(process.cwd(), 'tmp', '__TEST__.csv'), line, {
-      encoding: 'utf8',
-      flag: i ? 'a' : 'w',
+  beforeEach(async () => {
+    const fileData = [
+      'LUKITALIMA7@GMAIL.COM;EMAIL LESTE EUROPEU;\n',
+      'N pp <npetrulis@yahoo.com.br>;EMAIL TRANSIBERIANO 2019;\n',
+      'crismari28@hotmail.com;E mails SITE BRASIL ORIENTE;CRISTINA\n',
+      'embaroni@bol.com.br;BO 2014;EDUARDO MARTINS MANTOVANI BARONI\n',
+      'eunicefcf@gmail.com;BO 2014;EUNICE DE FÁTIMA CHAVES FIGUEIREDO\n',
+      'eunicefcf@gmail.com;BO 2019;Eunice\n',
+      'eunicefcf@gmail.com;BO 2019;Eunice\n',
+      'eunicefcf@gmail.com;;\n',
+    ];
+    fileData.forEach((line, i) => {
+      fs.writeFileSync(resolve(process.cwd(), 'tmp', '__TEST__.csv'), line, {
+        encoding: 'utf8',
+        flag: i ? 'a' : 'w',
+      });
     });
   });
-});
 
-afterEach(() => {
-  if (fs.existsSync(resolve(process.cwd(), 'tmp', '__TEST__.csv')))
-    fs.unlinkSync(resolve(process.cwd(), 'tmp', '__TEST__.csv'));
-});
+  afterEach(() => {
+    if (fs.existsSync(resolve(process.cwd(), 'tmp', '__TEST__.csv')))
+      fs.unlinkSync(resolve(process.cwd(), 'tmp', '__TEST__.csv'));
+  });
 
-describe('Import Controller: Store', () => {
   it('should be able to import a contact, create tags and save it', async () => {
     const request = mockRequest({
       body: {

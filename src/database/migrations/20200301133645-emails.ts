@@ -12,9 +12,14 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      name: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
+      },
       sent: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       templateId: {
         type: Sequelize.INTEGER,

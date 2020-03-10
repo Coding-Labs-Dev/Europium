@@ -6,7 +6,7 @@ import {
   BuildOptions,
 } from 'sequelize';
 
-interface TemplateModel extends Model {
+export interface TemplateModel extends Model {
   readonly id: number;
   readonly name: string;
   readonly subject: string;

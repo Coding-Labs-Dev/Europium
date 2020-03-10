@@ -6,18 +6,18 @@ import {
   BuildOptions,
 } from 'sequelize';
 
-interface ContactTagModel extends Model {
+interface ContactEmailModel extends Model {
   readonly contactId: number;
-  readonly TagId: number;
+  readonly emailId: number;
 }
 
-type ContactTagStatic = typeof Model & {
-  new (values?: object, options?: BuildOptions): ContactTagModel;
+type ContactEmailStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): ContactEmailModel;
 } & {
   _defaults: { [key: string]: { [key: string]: object | string | boolean } };
 };
 
-const ContactTagAttributes = {
+const ContactEmailAttributes = {
   contactId: {
     type: DataTypes.INTEGER,
     references: { model: 'Contacts', key: 'id' },
@@ -26,9 +26,9 @@ const ContactTagAttributes = {
     allowNull: false,
     primaryKey: true,
   },
-  tagId: {
+  emailId: {
     type: DataTypes.INTEGER,
-    references: { model: 'Tags', key: 'id' },
+    references: { model: 'Emails', key: 'id' },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
     allowNull: false,
@@ -36,12 +36,12 @@ const ContactTagAttributes = {
   },
 };
 
-export default class ContactTag extends Model<
-  ContactTagModel,
-  ContactTagStatic
+export default class ContactEmail extends Model<
+  ContactEmailModel,
+  ContactEmailStatic
 > {
   [x: string]: any;
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  ContactTag.init(ContactTagAttributes, { sequelize, timestamps: false });
+  ContactEmail.init(ContactEmailAttributes, { sequelize, timestamps: false });

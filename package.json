@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
-    "test": "cross-env NODE_ENV=test jest --watch",
+    "test": "cross-env NODE_ENV=test jest --watch --i",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand --watch",
-    "coverage": "cross-env NODE_ENV=test jest --coverage",
+    "coverage": "cross-env NODE_ENV=test jest --coverage -i",
     "migration:create": "./scripts/create_migration.sh",
     "db:migrate": "cross-env NODE_ENV=test ./scripts/migrate.sh"
   },

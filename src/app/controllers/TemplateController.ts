@@ -42,12 +42,7 @@ class TemplateController {
 
   async show(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const template = await Template.findByPk(id);
-
-    if (!template)
-      return res
-        .status(404)
-        .json({ error: { message: 'Template not found in database' } });
+    const template = await Template.findByPk(id, { rejectOnEmpty: true });
 
     return res.json(template);
   }

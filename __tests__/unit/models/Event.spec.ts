@@ -1,7 +1,15 @@
-import '@database/index';
 import Event from '@models/Event';
+import Database from '../../utils/Database';
 
 describe('Models: Event', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+
+  afterAll(async () => {
+    await Database.close();
+  });
+
   const model = Event;
   it('should have name Event', () => expect(Event.name).toBe('Event'));
 

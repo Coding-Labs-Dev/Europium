@@ -8,9 +8,13 @@ import {
 
 interface EmailModel extends Model {
   readonly id: number;
-  readonly sent: Date;
-  readonly templateId: number;
+  readonly sendStart: Date;
+  readonly sendEnd: Date;
+  readonly name: string;
+  readonly TemplateId: number;
   readonly variables: string[];
+
+  readonly setContacts: (data: number[]) => Promise<void>;
 }
 
 type EmailStatic = typeof Model & {
@@ -26,9 +30,14 @@ const EmailAttributes = {
     primaryKey: true,
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   sent: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   templateId: {
     type: DataTypes.INTEGER,
@@ -37,17 +46,29 @@ const EmailAttributes = {
     onDelete: 'SET NULL',
     allowNull: false,
   },
-  subject: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   variables: {
     type: DataTypes.JSON,
     allowNull: true,
   },
 };
 
-export default class Email extends Model<EmailModel, EmailStatic> {}
+export default class Email extends Model<EmailModel, EmailStatic> {
+  readonly id: number;
+
+  readonly sent: Date;
+
+  readonly name: string;
+
+  readonly TemplateId: number;
+
+  readonly variables: string[];
+
+  readonly setContacts: (data: number[]) => Promise<void>;
+
+  readonly contacts: object[];
+
+  readonly template: object;
+}
 
 export const factory = (sequelize: Sequelize): void =>
   Email.init(EmailAttributes, { sequelize });
@@ -61,7 +82,7 @@ export const associate = (models: {
   });
   Email.belongsToMany(models.Contact, {
     through: 'ContactEmails',
-    foreignKey: 'contactId',
+    foreignKey: 'emailId',
     timestamps: false,
     as: 'contacts',
   });

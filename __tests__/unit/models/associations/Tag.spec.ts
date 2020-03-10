@@ -1,8 +1,11 @@
-import Database from '@database/index';
 import Tag from '@models/Tag';
+import Database from '../../../utils/Database';
 
 describe('Models: Tag', () => {
-  afterAll(async () => Database.close());
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+  beforeEach(async () => Database.truncate(['Tag', 'Contact']));
   describe('associations', () => {
     it('should have a belongsToMany Contacts', () => {
       expect(Tag.associations).toMatchObject({

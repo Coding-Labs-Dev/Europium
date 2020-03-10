@@ -1,8 +1,15 @@
-import '@database/index';
-
 import Tag from '@models/Tag';
+import Database from '../../utils/Database';
 
 describe('Models: Tag', () => {
+  beforeAll(async () => {
+    await Database.getInstance();
+  });
+
+  afterAll(async () => {
+    await Database.close();
+  });
+
   const model = Tag;
   describe('proprieties', () => {
     const attributes = [
