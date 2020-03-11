@@ -7,6 +7,7 @@ declare namespace NodeJS {
     DB_DB_NAME: string;
     S3_BUCKET: string;
     SQS_QUEUE: string;
+    SES_CONFIGURATION_NAME: string;
     SOURCE_EMAIL: string;
   }
 }

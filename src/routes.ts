@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import SendEmailService from '@services/SendEmailService';
 
 /**
  * Middlewares
@@ -36,15 +35,6 @@ function wrapper(
 }
 
 const routes = Router();
-
-routes.get(
-  '/',
-  wrapper(async (req, res) => {
-    const sendEmailService = new SendEmailService();
-    const data = await sendEmailService.sendEmail();
-    return res.json(data);
-  }),
-);
 
 routes.post(
   '/upload/:type',
