@@ -4,5 +4,6 @@ phases:
     runtime-versions:
       node: 12
   build:
-    - echo Building Node app
-    - sls deploy --env production
+    commands:
+      - echo Building Node app
+      - sls deploy --env production
