@@ -12,3 +12,9 @@ yarn-error.log
 .DS_Store
 tmp
 __coverage__
+
+#serverless
+.serverless
+
+#vscode
+.vscode
