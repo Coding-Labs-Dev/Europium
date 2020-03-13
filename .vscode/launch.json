@@ -11,6 +11,17 @@
       "name": "Attach",
       "port": 9229,
       "restart": true
+    },
+    {
+      "name": "Debug",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "debug"
+      ],
+      "port": 5858
     }
   ]
 }

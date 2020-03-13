@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { Email } from '@models/index';
+import { Email, Contact } from '@models/index';
+import Sequelize from 'sequelize';
 import QueueService from '@services/QueueService';
 
 class EmailController {
@@ -11,7 +12,14 @@ class EmailController {
       templateId,
       variables,
     });
-    await email.setContacts(contacts);
+    const activeContacts = await Contact.findAll({
+      where: Sequelize.or({ id: contacts, active: true }),
+      attributes: ['id'],
+    });
+
+    const activeContactsIds = activeContacts.map(({ id }) => id);
+
+    await email.setContacts(activeContactsIds);
 
     const queueService = new QueueService();
 

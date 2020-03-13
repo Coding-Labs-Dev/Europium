@@ -93,6 +93,7 @@ export default class ImportContactService {
     const parseCSV = contactsFileStream.pipe(parser);
 
     parseCSV.on('data', line => {
+      console.log('line:', line);
       const { data, origin, nameFromCSV } = line;
 
       const email = this.getEmail(data.trim());

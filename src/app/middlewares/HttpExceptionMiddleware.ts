@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response, Errback } from 'express';
-import Youch from 'Youch';
+// import Youch from 'Youch';
 
 async function errorMiddleware(
   error: HTTPError,
@@ -16,11 +16,13 @@ async function errorMiddleware(
       },
     });
 
-  if (process.env.NODE_ENV !== 'production') {
-    const youch = new Youch(error, request);
+  console.log(error);
 
-    const errorJSON = await youch.toJSON();
-    return response.status(error.statusCode || 500).json(errorJSON);
+  if (process.env.NODE_ENV !== 'production') {
+    // const youch = new Youch(error, request);
+
+    // const errorJSON = await youch.toJSON();
+    return response.status(error.statusCode || 500).json(error);
   }
 
   return response.status(error.statusCode || 500).send();

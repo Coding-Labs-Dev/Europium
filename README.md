@@ -28,7 +28,7 @@
 - [x] User must add a subject to the e-mail
 - [x] User must add contacts to send the e-mail to
 - [x] User must map variables from template to contact data
-- [-] E-mail sending must use a queue system (Bull/Redis/SQS)
+- [-] E-mail sending must use an external queue system (SQS + Lambda)
 
 ### Events
 

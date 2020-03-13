@@ -8,7 +8,7 @@ const s3 = new S3({ region: 'us-east-1' });
 export async function getFile(
   fileKey: string,
 ): Promise<Buffer | Uint8Array | Blob | string | Readable> {
-  if (process.env.NODE_ENV === 'production') {
+  // if (process.env.NODE_ENV === 'production') {
     const file = await s3
       .getObject({
         Bucket: process.env.S3_BUCKET,
@@ -16,9 +16,9 @@ export async function getFile(
       })
       .promise();
     return file.Body as Buffer | Uint8Array | Blob | string | Readable;
-  }
+  // }
 
-  return fs.readFileSync(path.resolve(process.cwd(), 'tmp', fileKey));
+  // return fs.readFileSync(path.resolve(process.cwd(), 'tmp', fileKey));
 }
 
 export async function deleteFile(fileKey: string): Promise<void> {
@@ -29,6 +29,7 @@ export async function deleteFile(fileKey: string): Promise<void> {
         Key: fileKey,
       })
       .promise();
+  } else {
+    fs.unlinkSync(path.resolve(process.cwd(), 'tmp', fileKey));
   }
-  fs.unlinkSync(path.resolve(process.cwd(), 'tmp', fileKey));
 }

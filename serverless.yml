@@ -1,0 +1,58 @@
+service: email-extractor
+
+custom:
+  queueName: ses-global-mkt-email
+  s3Bucket: br.com.amigosdobrazil
+  serverless-offline:
+    httpPort: 3333
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceInclude:
+        - pg
+        - pg-hstore
+
+plugins:
+  # - serverless-webpack
+  # - serverless-dotenv-plugin
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  stage: staging
+
+  # iamRoleStatements:
+  # - Effect: 'Allow'
+  #   Action:
+  #     - 's3:PutObject'
+  #     - 's3:GetObject'
+  #     - 's3:DeleteObject'
+  #   Resource: 'arn:aws:s3:::${self:custom.s3Bucket}/*'
+  # - Effect: 'Allow'
+  #   Action:
+  #     - 'sqs:DeleteMessage'
+  #     - 'sqs:GetQueueUrl'
+  #     - 'sqs:ChangeMessageVisibility'
+  #     - 'sqs:SendMessageBatch'
+  #     - 'sqs:ReceiveMessage'
+  #     - 'sqs:SendMessage'
+  #     - 'sqs:GetQueueAttributes'
+  #     - 'sqs:ListQueueTags'
+  #     - 'sqs:ListDeadLetterSourceQueues'
+  #     - 'sqs:DeleteMessageBatch'
+  #     - 'sqs:ChangeMessageVisibilityBatch'
+  #     - 'sqs:SetQueueAttributes'
+  #   Resource: 'arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${self:custom.queueName}'
+  # - Effect: 'Allow'
+  #   Action:
+  #     - 'ses:GetSendQuota'
+  #   Resource: '*'
+
+functions:
+  app:
+    handler: src/handler.application
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'

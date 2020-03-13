@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import serverless from 'serverless-http';
 import routes from './routes';
 import HttpExceptionHandler from './app/middlewares/HttpExceptionMiddleware';
 
@@ -17,6 +18,9 @@ class App {
 
   middlewares(): void {
     this.server.use(express.json());
+    // this.server.use((req, res, next) => {
+    //   return res.status(404).json({ error: 'not found' });
+    // });
   }
 
   routes(): void {
@@ -28,4 +32,6 @@ class App {
   }
 }
 
-export default new App().server;
+export const { server } = new App();
+
+export default serverless(new App().server);

@@ -12,11 +12,13 @@ class ImportController {
     const { fileKey } = req.body;
 
     const data = await getFile(fileKey);
-    await deleteFile(fileKey);
+    // await deleteFile(fileKey);
 
     await importContacts.run(data);
 
     const { contacts, invalid, duplicated, tags } = importContacts;
+
+    return res.json({ contacts, invalid, duplicated, tags });
 
     await Tag.bulkCreate(
       tags.map(name => ({ name })),

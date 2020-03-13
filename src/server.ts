@@ -1,10 +1,10 @@
-import app from './app';
+import { server as app } from './app';
 
-app.listen(process.env.PORT || 3333, () => {
+app.listen(process.env.PORT || 3000, () => {
   // eslint-disable-next-line no-console
   console.log(
     `⚡️  Server listening in ${
       process.env.NODE_ENV
-    } mode on http://localhost:${process.env.PORT || '3333'}`,
+    } mode on http://localhost:${process.env.PORT || '3000'}`,
   );
 });

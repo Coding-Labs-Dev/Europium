@@ -16,12 +16,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const configuration: Options = {
-  dialect: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_DB_NAME || 'email_extractor',
-  logging: process.env.NODE_ENV === 'test' ? false : undefined,
+  dialect: process.env.DB_DIALECT,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  // logging: process.env.NODE_ENV === 'test' ? false : undefined,
   define: {
     timestamps: true,
   },
