@@ -13,6 +13,7 @@ import ValidatorMiddleware from '@middlewares/ValidatorMiddleware';
 
 import UploadFileController from '@controllers/UploadFileController';
 import ImportContactsController from '@controllers/ImportContactsController';
+import ContactController from '@controllers/ContactController';
 import TemplateController from '@controllers/TemplateController';
 import EmailController from '@controllers/EmailController';
 
@@ -24,6 +25,7 @@ import UploadValidator from '@validators/UploadValidator';
 import ImportContactsValidator from '@validators/ImportContactsValidator';
 import TemplateControllerValidator from '@validators/TemplateControllerValidator';
 import EmailControllerValidator from '@validators/EmailValidator';
+import ContactControllerValidator from '@validators/ContactControllerValidator';
 
 function wrapper(
   fn: Function,
@@ -47,6 +49,12 @@ routes.post(
   '/contacts/import',
   ValidatorMiddleware(ImportContactsValidator.store),
   wrapper(ImportContactsController.store),
+);
+
+routes.post(
+  '/contacts',
+  ValidatorMiddleware(ContactControllerValidator.store),
+  wrapper(ContactController.store),
 );
 
 routes.post(

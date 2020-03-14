@@ -4,7 +4,7 @@ custom:
   queueName: ses-global-mkt-email
   s3Bucket: br.com.amigosdobrazil
   serverless-offline:
-    httpPort: 3333
+    port: 3333
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules:

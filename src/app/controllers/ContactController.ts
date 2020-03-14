@@ -1,22 +1,15 @@
 import { Request, Response } from 'express';
 import Sequelize from 'sequelize';
-import ImportContactService from '@services/ImportContactService';
-import { getFile, deleteFile } from '@utils/File';
 
 import { Contact, Tag, ContactTag } from '@models/index';
+import { Contact as ContactType } from '@services/ImportContactService';
 
 class ImportController {
   async store(req: Request, res: Response): Promise<Response> {
-    const importContacts = new ImportContactService();
-
-    const { fileKey } = req.body;
-
-    const data = await getFile(fileKey);
-    await deleteFile(fileKey);
-
-    await importContacts.run(data);
-
-    const { contacts, invalid, duplicated, tags } = importContacts;
+    const {
+      contacts,
+      tags,
+    }: { contacts: ContactType[]; tags: string[] } = req.body;
 
     await Tag.bulkCreate(
       tags.map(name => ({ name })),
@@ -52,7 +45,7 @@ class ImportController {
 
     await ContactTag.bulkCreate(associateData);
 
-    return res.json({ invalid, duplicated, contacts, tags });
+    return res.json({ contacts, tags });
   }
 }
 

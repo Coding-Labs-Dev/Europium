@@ -4,9 +4,9 @@ import { NextFunction, Request, Response, Errback } from 'express';
 
 async function errorMiddleware(
   error: HTTPError,
-  request: Request,
+  _request: Request,
   response: Response,
-  next: NextFunction | undefined,
+  _next: NextFunction | undefined,
 ): Promise<Response> {
   if (error.name === 'ValidationError')
     return response.status(error.statusCode || 400).json({
@@ -15,7 +15,7 @@ async function errorMiddleware(
         fields: error.fields,
       },
     });
-
+  // eslint-disable-next-line no-console
   console.log(error);
 
   if (process.env.NODE_ENV !== 'production') {

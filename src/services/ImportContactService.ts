@@ -80,15 +80,16 @@ export default class ImportContactService {
     if (data.length && !this.tags.includes(data)) this.tags.push(data);
   }
 
-  async run(input: string | Readable | Buffer | Uint8Array): Promise<void> {
-    // const parser = csvParse([
-    //   {
-    //     separator: ';',
-    //     columns: ['data', 'origin', 'nameFromCSV'],
-    //   },
-    // ]);
-
-    const parser = csvParse({ separator: ';' });
+  async run(
+    input: string | Readable | Buffer | Uint8Array,
+    parserOptions?: csvParse.Options,
+  ): Promise<void> {
+    const options: csvParse.Options = {
+      separator: ';',
+      headers: ['email', 'tag', 'name'],
+      ...parserOptions,
+    };
+    const parser = csvParse(options);
 
     const contactsFileStream = await ToReadable(input);
 
@@ -152,7 +153,7 @@ export default class ImportContactService {
   }
 }
 
-type Contact = {
+export type Contact = {
   email: string;
   name: string | null;
   alternateNames: string[] | null;

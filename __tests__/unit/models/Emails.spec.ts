@@ -23,10 +23,6 @@ describe('Models: Email', () => {
         type: 'STRING',
       },
       {
-        name: 'subject',
-        type: 'STRING',
-      },
-      {
         name: 'sent',
         type: 'DATE',
       },

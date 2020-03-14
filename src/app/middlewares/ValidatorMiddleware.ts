@@ -24,7 +24,7 @@ export default function Validator(
 ): RequestHandler {
   const validate = async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction,
   ): Promise<void> => {
     const { params: paramsData, body: bodyData } = req;

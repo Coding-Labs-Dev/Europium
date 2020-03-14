@@ -1,8 +1,5 @@
-import { mockRequest, mockResponse } from 'mock-req-res';
 import * as yup from 'yup';
-import ValidationMiddleware, {
-  validateErrorFormater,
-} from '@middlewares/ValidatorMiddleware';
+import { validateErrorFormater } from '@middlewares/ValidatorMiddleware';
 
 describe('Middleware: Validation', () => {
   it('should format a yup error', async () => {

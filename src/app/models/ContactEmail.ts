@@ -1,10 +1,4 @@
-import {
-  Sequelize,
-  Model,
-  ModelCtor,
-  DataTypes,
-  BuildOptions,
-} from 'sequelize';
+import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
 
 interface ContactEmailModel extends Model {
   readonly contactId: number;

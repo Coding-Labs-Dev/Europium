@@ -191,14 +191,14 @@ describe('Import Contacts Service', () => {
 
     expect(invalid).toEqual([
       expect.objectContaining({
-        data: 'eunicefcf@gmail',
-        origin: 'BO 2019',
-        nameFromCSV: 'Eunice',
+        email: 'eunicefcf@gmail',
+        tag: 'BO 2019',
+        name: 'Eunice',
       }),
       expect.objectContaining({
-        data: 'eunicefcfgmail.com',
-        origin: 'BO 2019',
-        nameFromCSV: 'Eunice',
+        email: 'eunicefcfgmail.com',
+        tag: 'BO 2019',
+        name: 'Eunice',
       }),
     ]);
   });

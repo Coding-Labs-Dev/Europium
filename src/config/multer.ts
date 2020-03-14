@@ -26,7 +26,7 @@ const getStorage = (): multer.StorageEngine => {
   if (process.env.NODE_ENV !== 'production') {
     return multer.diskStorage({
       destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-      filename: (req, file, callback) => {
+      filename: (_req, file, callback) => {
         const filename = `${uuid()}${extname(file.originalname)}`;
         return callback(null, filename);
       },
