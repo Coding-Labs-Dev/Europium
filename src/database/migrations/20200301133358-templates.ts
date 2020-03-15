@@ -29,9 +29,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      variables: {
-        type: Sequelize.JSON,
-      },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },
     });

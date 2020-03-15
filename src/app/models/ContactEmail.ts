@@ -38,4 +38,8 @@ export default class ContactEmail extends Model<
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  ContactEmail.init(ContactEmailAttributes, { sequelize, timestamps: false });
+  ContactEmail.init(ContactEmailAttributes, {
+    sequelize,
+    timestamps: false,
+    tableName: 'ContactEmails',
+  });

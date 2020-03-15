@@ -5,24 +5,22 @@ import S3 from 'aws-sdk/clients/s3';
 
 const s3 = new S3({ region: 'us-east-1' });
 
-export async function getFile(
-  fileKey: string,
-): Promise<Buffer | Uint8Array | string | Readable> {
-  if (process.env.NODE_ENV === 'production') {
-    const file = await s3
+export async function getFile(fileKey: string): Promise<Readable> {
+  if (process.env.STORAGE === 's3') {
+    return s3
       .getObject({
         Bucket: process.env.S3_BUCKET,
         Key: fileKey,
       })
-      .promise();
-    return file.Body as Buffer | Uint8Array | string | Readable;
+      .createReadStream();
   }
 
-  return fs.readFileSync(path.resolve(process.cwd(), 'tmp', fileKey));
+  const file = fs.readFileSync(path.resolve(process.cwd(), 'tmp', fileKey));
+  return Readable.from(Buffer.from(file));
 }
 
 export async function deleteFile(fileKey: string): Promise<void> {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.STORAGE === 's3') {
     await s3
       .deleteObject({
         Bucket: process.env.S3_BUCKET,

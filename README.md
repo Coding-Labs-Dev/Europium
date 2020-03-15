@@ -18,7 +18,8 @@
 
 - [x] User can upload an HTML template
 - [x] Template should be parsed to HTML
-- [x] Parsed template must be saved in AWS
+- [x] ~~Parsed template must be saved in AWS~~
+- [ ] Template must be Edge formated
 - [x] Template data must be saved in Database
 
 ### E-mail
@@ -28,7 +29,8 @@
 - [x] User must add a subject to the e-mail
 - [x] User must add contacts to send the e-mail to
 - [x] User must map variables from template to contact data
-- [-] E-mail sending must use an external queue system (SQS + Lambda)
+- [x] E-mail sending must use an external queue system (SQS + Lambda)
+- [ ] E-mail template must be parsed with Edge
 
 ### Events
 

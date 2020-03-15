@@ -62,7 +62,7 @@ export default class Contact extends Model<ContactModel, ContactStatic> {
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  Contact.init(ContactAttributes, { sequelize });
+  Contact.init(ContactAttributes, { sequelize, tableName: 'Contacts' });
 
 export const associate = (models: {
   [key: string]: ModelCtor<Model>;

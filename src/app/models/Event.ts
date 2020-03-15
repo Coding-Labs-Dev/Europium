@@ -69,7 +69,7 @@ const EventAttributes = {
 export default class Event extends Model<EventModel, EventStatic> {}
 
 export const factory = (sequelize: Sequelize): void =>
-  Event.init(EventAttributes, { sequelize });
+  Event.init(EventAttributes, { sequelize, tableName: 'Events' });
 
 export const associate = (models: {
   [key: string]: ModelCtor<Model>;

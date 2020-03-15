@@ -1,41 +1,37 @@
 import { Request, Response } from 'express';
-import ImportHTMLService from '@services/ImportHTMLService';
-import ToReadable from '@utils/ToReadable';
-import { Template as TemplateType } from 'aws-sdk/clients/ses';
+import ImportTemplateService from '@services/ImportTemplateService';
+
 import Template from '@models/Template';
 import { getFile, deleteFile } from '@utils/File';
 
 class TemplateController {
   async store(req: Request, res: Response): Promise<Response> {
-    const importHtmlService = new ImportHTMLService();
+    const importTemplateService = new ImportTemplateService();
 
     const { fileKey, template } = req.body;
 
     const data = await getFile(fileKey);
     await deleteFile(fileKey);
 
-    const readable = await ToReadable(data);
+    await importTemplateService.run(data);
 
-    await importHtmlService.run(readable);
+    const { parsed } = importTemplateService;
 
-    const { parsedHTML } = importHtmlService;
+    if (!parsed)
+      return res
+        .status(400)
+        .json({ error: { message: 'Invalid Template Service' } });
 
-    if (!parsedHTML)
-      return res.status(400).json({ error: { message: 'Invalid HTML file' } });
+    const { name, subject, text } = template;
 
-    const { name, subject, text, variables } = template;
-
-    const templateData: TemplateType = {
-      TemplateName: name,
-      HtmlPart: parsedHTML.toString(),
-      TextPart: text,
-      SubjectPart: subject,
+    const templateData = {
+      name,
+      subject,
+      html: parsed,
+      text,
     };
 
-    const result = await importHtmlService.createTemplate(
-      templateData,
-      variables,
-    );
+    const result = await Template.create(templateData);
 
     return res.status(204).json(result);
   }

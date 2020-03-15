@@ -40,7 +40,7 @@ export default class Tag extends Model<TagModel, TagStatic> {
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  Tag.init(TagAttributes, { sequelize });
+  Tag.init(TagAttributes, { sequelize, tableName: 'Tags' });
 
 export const associate = (models: {
   [key: string]: ModelCtor<Model>;

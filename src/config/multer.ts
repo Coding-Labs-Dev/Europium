@@ -19,35 +19,30 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   dotenv.config();
 }
-
 const S3 = new AWS.S3({ region: 'us-east-1' });
 
-const getStorage = (): multer.StorageEngine => {
-  if (process.env.NODE_ENV !== 'production') {
-    return multer.diskStorage({
-      destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-      filename: (_req, file, callback) => {
-        const filename = `${uuid()}${extname(file.originalname)}`;
-        return callback(null, filename);
-      },
-    });
-  }
-
-  return multerS3({
-    s3: S3,
-    bucket: process.env.S3_BUCKET,
-    key: (req: Request, file, cb) => {
-      const filename = `${uuid()}${extname(file.originalname)}`;
-      const { type } = req.params;
-      if (type === 'template') return cb(null, `tmp/templates/${filename}`);
-      if (type === 'contact') return cb(null, `tmp/contacts/${filename}`);
-      return cb('Invalid reques type');
-    },
-  });
-};
-
 const multerConfig = {
-  storage: getStorage(),
+  storage:
+    process.env.STORAGE === 's3'
+      ? multerS3({
+          s3: S3,
+          bucket: process.env.S3_BUCKET,
+          key: (req: Request, file, cb) => {
+            const filename = `${uuid()}${extname(file.originalname)}`;
+            const { type } = req.params;
+            if (type === 'template')
+              return cb(null, `tmp/templates/${filename}`);
+            if (type === 'contact') return cb(null, `tmp/contacts/${filename}`);
+            return cb('Invalid reques type');
+          },
+        })
+      : multer.diskStorage({
+          destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
+          filename: (_req, file, callback) => {
+            const filename = `${uuid()}${extname(file.originalname)}`;
+            return callback(null, filename);
+          },
+        }),
 };
 
 export default multerConfig;

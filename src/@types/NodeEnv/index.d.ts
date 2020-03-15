@@ -16,6 +16,8 @@ declare namespace NodeJS {
     S3_BUCKET: string;
     SQS_QUEUE: string;
     SES_CONFIGURATION_NAME: string;
+    SES_MAX_SEND_QUOTA: number;
     SOURCE_EMAIL: string;
+    STORAGE: string | null;
   }
 }

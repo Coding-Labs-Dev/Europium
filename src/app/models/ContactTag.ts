@@ -38,4 +38,8 @@ export default class ContactTag extends Model<
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  ContactTag.init(ContactTagAttributes, { sequelize, timestamps: false });
+  ContactTag.init(ContactTagAttributes, {
+    sequelize,
+    timestamps: false,
+    tableName: 'ContactTags',
+  });

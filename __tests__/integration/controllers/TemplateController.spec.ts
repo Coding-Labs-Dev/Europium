@@ -45,7 +45,6 @@ describe('Controller: Template', () => {
         name: 'TemplateTest',
         subject: 'Hello World',
         text: 'TextPart',
-        variables: ['name'],
       },
     };
     const request = mockRequest({ body });
@@ -65,7 +64,6 @@ describe('Controller: Template', () => {
         html:
           '<html><head><title>Hello World</title></head><body><h1>Hello {{name}}</h1></body></html>',
         text: 'TextPart',
-        variables: ['name'],
       }),
     );
   });
@@ -76,7 +74,6 @@ describe('Controller: Template', () => {
       text: 'TextPart',
       html:
         '<html><head><title>Hello World</title></head><body><h1>Hello {{name}}</h1></body></html>',
-      variables: ['name'],
     });
 
     const templates = await Template.findAll();
@@ -94,7 +91,6 @@ describe('Controller: Template', () => {
         html:
           '<html><head><title>Hello World</title></head><body><h1>Hello {{name}}</h1></body></html>',
         text: 'TextPart',
-        variables: ['name'],
       }),
     );
   });

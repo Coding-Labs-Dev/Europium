@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Readable } from 'stream';
 import csvParse from 'csv-parser';
-import ToReadable from '@utils/ToReadable';
 
 export default class ImportContactService {
   contacts: Contact[];
@@ -80,10 +79,7 @@ export default class ImportContactService {
     if (data.length && !this.tags.includes(data)) this.tags.push(data);
   }
 
-  async run(
-    input: string | Readable | Buffer | Uint8Array,
-    parserOptions?: csvParse.Options,
-  ): Promise<void> {
+  async run(input: Readable, parserOptions?: csvParse.Options): Promise<void> {
     const options: csvParse.Options = {
       separator: ';',
       headers: ['email', 'tag', 'name'],
@@ -91,9 +87,7 @@ export default class ImportContactService {
     };
     const parser = csvParse(options);
 
-    const contactsFileStream = await ToReadable(input);
-
-    const parseCSV = contactsFileStream.pipe(parser);
+    const parseCSV = input.pipe(parser);
 
     parseCSV.on('data', line => {
       const { email: data, tag: origin, name: nameFromCSV } = line;
@@ -148,7 +142,6 @@ export default class ImportContactService {
       }
       return null;
     });
-
     await new Promise(resolve => parseCSV.on('end', resolve));
   }
 }

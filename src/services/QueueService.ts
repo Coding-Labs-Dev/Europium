@@ -1,4 +1,4 @@
-import { SQS, SES, AWSError } from 'aws-sdk';
+import { SQS, AWSError } from 'aws-sdk';
 import { uuid } from 'uuidv4';
 import Email from '@models/Email';
 import {
@@ -9,12 +9,9 @@ import {
 import { PromiseResult } from 'aws-sdk/lib/request';
 
 export default class SendEmailService {
-  private ses: SES;
-
   private sqs: SQS;
 
   constructor() {
-    this.ses = new SES({ region: 'us-east-1' });
     this.sqs = new SQS({ region: 'us-east-1' });
   }
 
@@ -27,8 +24,6 @@ export default class SendEmailService {
   async run(
     emailId: number,
   ): Promise<PromiseResult<SendMessageResult, AWSError>[] | void> {
-    const { MaxSendRate = 14 } = await this.ses.getSendQuota().promise();
-
     const email = await Email.findByPk(emailId, {
       rejectOnEmpty: true,
       include: ['contacts', 'template'],
@@ -36,10 +31,8 @@ export default class SendEmailService {
 
     const { template, contacts, variables } = email;
 
-    const contactsChunks = this.arrayChunks(contacts, MaxSendRate);
-
-    const messages: SendMessageBatchRequestEntryList = contactsChunks.map(
-      chunk => ({
+    const allMessages: SendMessageBatchRequestEntryList = contacts.map(
+      contact => ({
         Id: uuid(),
         DelaySeconds: 1,
         MessageBody: JSON.stringify({
@@ -48,9 +41,14 @@ export default class SendEmailService {
           configurationName: process.env.SES_CONFIGURATION_NAME,
           source: process.env.SOURCE_EMAIL,
           variables,
-          contacts: chunk,
+          contact,
         }),
       }),
+    );
+
+    const messages = this.arrayChunks(
+      allMessages,
+      process.env.SES_MAX_SEND_QUOTA,
     );
 
     const data = await Promise.all(

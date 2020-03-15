@@ -25,7 +25,7 @@ async function errorMiddleware(
     return response.status(error.statusCode || 500).json(error);
   }
 
-  return response.status(error.statusCode || 500).send();
+  return response.status(error.statusCode || 500).send(error);
 }
 
 interface HTTPError extends Errback {

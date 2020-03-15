@@ -1,8 +1,8 @@
 service: email-extractor
 
 custom:
-  queueName: ses-global-mkt-email
-  s3Bucket: br.com.amigosdobrazil
+  queueName: ${env:SQS_QUEUE_NAME}
+  s3Bucket: ${env:S3_BUCKET}
   serverless-offline:
     port: 3333
   webpack:
@@ -15,6 +15,7 @@ custom:
 plugins:
   - serverless-webpack
   - serverless-dotenv-plugin
+  - serverless-pseudo-parameters
   - serverless-offline
 
 provider:
@@ -23,36 +24,48 @@ provider:
   region: us-east-1
   stage: staging
 
-  # iamRoleStatements:
-  # - Effect: 'Allow'
-  #   Action:
-  #     - 's3:PutObject'
-  #     - 's3:GetObject'
-  #     - 's3:DeleteObject'
-  #   Resource: 'arn:aws:s3:::${self:custom.s3Bucket}/*'
-  # - Effect: 'Allow'
-  #   Action:
-  #     - 'sqs:DeleteMessage'
-  #     - 'sqs:GetQueueUrl'
-  #     - 'sqs:ChangeMessageVisibility'
-  #     - 'sqs:SendMessageBatch'
-  #     - 'sqs:ReceiveMessage'
-  #     - 'sqs:SendMessage'
-  #     - 'sqs:GetQueueAttributes'
-  #     - 'sqs:ListQueueTags'
-  #     - 'sqs:ListDeadLetterSourceQueues'
-  #     - 'sqs:DeleteMessageBatch'
-  #     - 'sqs:ChangeMessageVisibilityBatch'
-  #     - 'sqs:SetQueueAttributes'
-  #   Resource: 'arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${self:custom.queueName}'
-  # - Effect: 'Allow'
-  #   Action:
-  #     - 'ses:GetSendQuota'
-  #   Resource: '*'
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 's3:PutObject'
+        - 's3:GetObject'
+        - 's3:DeleteObject'
+      Resource: 'arn:aws:s3:::${self:custom.s3Bucket}/*'
+    - Effect: 'Allow'
+      Action:
+        - 'ses:GetSendQuota'
+        - 'ses:CreateTemplate'
+      Resource: '*'
+    - Effect: 'Allow'
+      Action:
+        - 'sqs:DeleteMessage'
+        - 'sqs:GetQueueUrl'
+        - 'sqs:ChangeMessageVisibility'
+        - 'sqs:SendMessageBatch'
+        - 'sqs:ReceiveMessage'
+        - 'sqs:SendMessage'
+        - 'sqs:GetQueueAttributes'
+        - 'sqs:ListQueueTags'
+        - 'sqs:ListDeadLetterSourceQueues'
+        - 'sqs:DeleteMessageBatch'
+        - 'sqs:ChangeMessageVisibilityBatch'
+        - 'sqs:SetQueueAttributes'
+      Resource: 'arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${self:custom.queueName}'
 
 functions:
   app:
     handler: src/handler.application
+    timeout: 10
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
+    vpc:
+      securityGroupIds:
+        - ${env:SEC_GROUP}
+      subnetIds:
+        - - ${env:SUBNET_1}
+        - - ${env:SUBNET_2}
+        - - ${env:SUBNET_3}
+        - - ${env:SUBNET_4}
+        - - ${env:SUBNET_5}
+        - - ${env:SUBNET_6}

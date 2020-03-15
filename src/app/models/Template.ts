@@ -12,7 +12,6 @@ export interface TemplateModel extends Model {
   readonly subject: string;
   readonly text: string | null;
   readonly html: string;
-  readonly variables: string[] | null;
 }
 
 type TemplateStatic = typeof Model & {
@@ -59,12 +58,10 @@ export default class Template extends Model<TemplateModel, TemplateStatic> {
   readonly text: string | null;
 
   readonly html: string;
-
-  readonly variables: string[] | null;
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  Template.init(TemplateAttributes, { sequelize });
+  Template.init(TemplateAttributes, { sequelize, tableName: 'Templates' });
 
 export const associate = (models: {
   [key: string]: ModelCtor<Model>;

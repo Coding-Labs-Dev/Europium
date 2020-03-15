@@ -71,7 +71,7 @@ export default class Email extends Model<EmailModel, EmailStatic> {
 }
 
 export const factory = (sequelize: Sequelize): void =>
-  Email.init(EmailAttributes, { sequelize });
+  Email.init(EmailAttributes, { sequelize, tableName: 'Emails' });
 
 export const associate = (models: {
   [key: string]: ModelCtor<Model>;
