@@ -16,6 +16,7 @@ import ImportContactsController from '@controllers/ImportContactsController';
 import ContactController from '@controllers/ContactController';
 import TemplateController from '@controllers/TemplateController';
 import EmailController from '@controllers/EmailController';
+import EventController from '@controllers/EventController';
 
 /**
  * Validators
@@ -52,6 +53,7 @@ routes.post(
 );
 
 routes.get('/contacts', wrapper(ContactController.index));
+routes.get('/contacts/:id', wrapper(ContactController.show));
 
 routes.post(
   '/contacts',
@@ -86,5 +88,8 @@ routes.get(
   ValidatorMiddleware(EmailControllerValidator.show),
   wrapper(EmailController.show),
 );
+
+routes.get('/emails/:emailId/events', wrapper(EventController.index));
+routes.get('/emails/:emailId/events/:id', wrapper(EventController.show));
 
 export default routes;

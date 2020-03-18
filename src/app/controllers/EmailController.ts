@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Email, Contact, Template } from '@models/index';
-import Sequelize, { Op } from 'sequelize';
+import { Op } from 'sequelize';
 import QueueService from '@services/QueueService';
 
 class EmailController {

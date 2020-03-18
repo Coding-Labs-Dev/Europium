@@ -1,12 +1,43 @@
 import { Request, Response } from 'express';
 import Sequelize from 'sequelize';
 
-import { Contact, Tag, ContactTag } from '@models/index';
+import { Contact, Tag, ContactTag, Email, Event } from '@models/index';
 import { Contact as ContactType } from '@services/ImportContactService';
 
-class ImportController {
+class ContactController {
   async index(_req: Request, res: Response): Promise<Response> {
-    return res.json(await Contact.findAll());
+    return res.json(
+      await Contact.findAll({
+        include: [
+          {
+            model: Tag,
+            as: 'tags',
+          },
+        ],
+      }),
+    );
+  }
+
+  async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const contact = await Contact.findByPk(id, {
+      include: [
+        {
+          model: Email,
+          as: 'emails',
+        },
+        {
+          model: Tag,
+          as: 'tags',
+        },
+        {
+          model: Event,
+          as: 'events',
+        },
+      ],
+    });
+
+    return res.json(contact);
   }
 
   async store(req: Request, res: Response): Promise<Response> {
@@ -53,4 +84,4 @@ class ImportController {
   }
 }
 
-export default new ImportController();
+export default new ContactController();
