@@ -28,14 +28,14 @@ module.exports = {
       },
       eventType: {
         type: Sequelize.ENUM(
-          'send',
-          'reject',
           'bounce',
           'complaint',
           'delivery',
+          'send',
+          'reject',
           'open',
           'click',
-          'render_failure',
+          'failure',
         ),
         allowNull: false,
       },

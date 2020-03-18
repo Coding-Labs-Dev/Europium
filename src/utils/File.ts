@@ -15,7 +15,7 @@ export async function getFile(fileKey: string): Promise<Readable> {
       .createReadStream();
   }
 
-  const file = fs.readFileSync(path.resolve(process.cwd(), 'tmp', fileKey));
+  const file = fs.readFileSync(path.resolve('/', 'tmp', fileKey));
   return Readable.from(Buffer.from(file));
 }
 
@@ -28,6 +28,6 @@ export async function deleteFile(fileKey: string): Promise<void> {
       })
       .promise();
   } else {
-    fs.unlinkSync(path.resolve(process.cwd(), 'tmp', fileKey));
+    fs.unlinkSync(path.resolve('/', 'tmp', fileKey));
   }
 }

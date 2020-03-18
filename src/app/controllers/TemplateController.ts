@@ -5,6 +5,10 @@ import Template from '@models/Template';
 import { getFile, deleteFile } from '@utils/File';
 
 class TemplateController {
+  async index(_req: Request, res: Response): Promise<Response> {
+    return res.json(await Template.findAll());
+  }
+
   async store(req: Request, res: Response): Promise<Response> {
     const importTemplateService = new ImportTemplateService();
 

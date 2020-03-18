@@ -13,8 +13,8 @@ custom:
         - pg-hstore
 
 plugins:
-  - serverless-webpack
   - serverless-dotenv-plugin
+  - serverless-webpack
   - serverless-pseudo-parameters
   - serverless-offline
 
@@ -63,9 +63,9 @@ functions:
       securityGroupIds:
         - ${env:SEC_GROUP}
       subnetIds:
-        - - ${env:SUBNET_1}
-        - - ${env:SUBNET_2}
-        - - ${env:SUBNET_3}
-        - - ${env:SUBNET_4}
-        - - ${env:SUBNET_5}
-        - - ${env:SUBNET_6}
+        - ${env:SUBNET_1}
+        - ${env:SUBNET_2}
+        - ${env:SUBNET_3}
+        - ${env:SUBNET_4}
+        - ${env:SUBNET_5}
+        - ${env:SUBNET_6}

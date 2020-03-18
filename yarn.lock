@@ -755,6 +755,11 @@
     uuid "^3.4.0"
     yamljs "^0.3.0"
 
+"@serverless/eslint-config@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@serverless/eslint-config/-/eslint-config-1.2.1.tgz#1fcc8464297427e140a51eb130891cbe7dcfdd82"
+  integrity sha512-UknKhbfG8QIuyrxrzb3nuHOlaVuuZIx0ceoHBUBoLCNFzCsRbZvPBmzkVcpkUSNRVMyG23wrJKTKUW7lGMGtAQ==
+
 "@serverless/event-mocks@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@serverless/event-mocks/-/event-mocks-1.1.1.tgz#7064b99ccc29d9a8e9b799f413dbcfd64ea3b7ee"

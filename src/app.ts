@@ -34,4 +34,4 @@ class App {
 
 export const { server } = new App();
 
-export default serverless(new App().server);
+export default serverless(server);

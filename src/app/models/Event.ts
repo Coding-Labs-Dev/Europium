@@ -11,13 +11,14 @@ interface EventModel extends Model {
   readonly emailId: number;
   readonly contactId: number;
   readonly eventType:
-    | 'reject'
     | 'bounce'
     | 'complaint'
     | 'delivery'
+    | 'send'
+    | 'reject'
     | 'open'
     | 'click'
-    | 'render_failure';
+    | 'failure';
   readonly eventDetails: object;
 }
 

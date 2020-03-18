@@ -1,9 +1,22 @@
 import { Request, Response } from 'express';
-import { Email, Contact } from '@models/index';
-import Sequelize from 'sequelize';
+import { Email, Contact, Template } from '@models/index';
+import Sequelize, { Op } from 'sequelize';
 import QueueService from '@services/QueueService';
 
 class EmailController {
+  async index(_req: Request, res: Response): Promise<Response> {
+    return res.json(
+      await Email.findAll({
+        include: [
+          {
+            model: Template,
+            as: 'template',
+          },
+        ],
+      }),
+    );
+  }
+
   async store(req: Request, res: Response): Promise<Response> {
     const { name, templateId, variables, subject, contacts } = req.body;
     const email = await Email.create({
@@ -13,7 +26,10 @@ class EmailController {
       variables,
     });
     const activeContacts = await Contact.findAll({
-      where: Sequelize.or({ id: contacts, active: true }),
+      where: {
+        [Op.or]: { id: contacts },
+        [Op.and]: { active: true },
+      },
       attributes: ['id'],
     });
 
@@ -32,7 +48,10 @@ class EmailController {
     const { id } = req.params;
     const email = await Email.findByPk(id, {
       rejectOnEmpty: true,
-      include: ['template', 'contacts'],
+      include: [
+        { model: Template, as: 'template' },
+        { model: Contact, as: 'contacts' },
+      ],
     });
     return res.json(email);
   }

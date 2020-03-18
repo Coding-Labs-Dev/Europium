@@ -24,7 +24,7 @@ module.exports = {
                 allowNull: false,
             },
             eventType: {
-                type: Sequelize.ENUM('send', 'reject', 'bounce', 'complaint', 'delivery', 'open', 'click', 'render_failure'),
+                type: Sequelize.ENUM('bounce', 'complaint', 'delivery', 'send', 'reject', 'open', 'click', 'failure'),
                 allowNull: false,
             },
             eventDetails: {

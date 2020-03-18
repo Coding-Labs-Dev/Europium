@@ -51,6 +51,8 @@ routes.post(
   wrapper(ImportContactsController.store),
 );
 
+routes.get('/contacts', wrapper(ContactController.index));
+
 routes.post(
   '/contacts',
   ValidatorMiddleware(ContactControllerValidator.store),
@@ -62,6 +64,9 @@ routes.post(
   ValidatorMiddleware(TemplateControllerValidator.store),
   wrapper(TemplateController.store),
 );
+
+routes.get('/templates', wrapper(TemplateController.index));
+
 routes.get(
   '/templates/:id',
   ValidatorMiddleware(TemplateControllerValidator.show),
@@ -73,6 +78,8 @@ routes.post(
   ValidatorMiddleware(EmailControllerValidator.store),
   wrapper(EmailController.store),
 );
+
+routes.get('/emails/', wrapper(EmailController.index));
 
 routes.get(
   '/emails/:id',

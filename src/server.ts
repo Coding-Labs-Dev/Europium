@@ -1,6 +1,6 @@
-import { server as app } from './app';
+import { server } from './app';
 
-app.listen(process.env.PORT || 3000, () => {
+server.listen(process.env.PORT || 3333, () => {
   // eslint-disable-next-line no-console
   console.log(
     `⚡️  Server listening in ${

@@ -5,6 +5,10 @@ import { Contact, Tag, ContactTag } from '@models/index';
 import { Contact as ContactType } from '@services/ImportContactService';
 
 class ImportController {
+  async index(_req: Request, res: Response): Promise<Response> {
+    return res.json(await Contact.findAll());
+  }
+
   async store(req: Request, res: Response): Promise<Response> {
     const {
       contacts,
