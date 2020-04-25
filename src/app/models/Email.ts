@@ -59,7 +59,7 @@ export default class Email extends Model<EmailModel, EmailStatic> {
 
   readonly name: string;
 
-  readonly TemplateId: number;
+  readonly templateId: number;
 
   readonly variables: string[];
 

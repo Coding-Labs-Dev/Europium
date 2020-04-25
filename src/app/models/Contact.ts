@@ -79,4 +79,8 @@ export const associate = (models: {
     timestamps: false,
     as: 'emails',
   });
+  Contact.hasMany(models.Event, {
+    foreignKey: 'contactId',
+    as: 'events',
+  });
 };

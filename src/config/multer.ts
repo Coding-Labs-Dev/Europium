@@ -37,7 +37,7 @@ const multerConfig = {
           },
         })
       : multer.diskStorage({
-          destination: resolve(__dirname, '..', '..', 'tmp'),
+          destination: resolve(process.cwd(), 'tmp'),
           filename: (_req, file, callback) => {
             const filename = `${uuid()}${extname(file.originalname)}`;
             return callback(null, filename);

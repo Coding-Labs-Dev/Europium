@@ -1,8 +1,6 @@
 service: email-extractor
 
 custom:
-  queueName: ${env:SQS_QUEUE_NAME}
-  s3Bucket: ${env:S3_BUCKET}
   serverless-offline:
     port: 3333
   webpack:
@@ -30,7 +28,7 @@ provider:
         - 's3:PutObject'
         - 's3:GetObject'
         - 's3:DeleteObject'
-      Resource: 'arn:aws:s3:::${self:custom.s3Bucket}/*'
+      Resource: 'arn:aws:s3:::${env:S3_BUCKET}/*'
     - Effect: 'Allow'
       Action:
         - 'ses:GetSendQuota'
@@ -50,12 +48,12 @@ provider:
         - 'sqs:DeleteMessageBatch'
         - 'sqs:ChangeMessageVisibilityBatch'
         - 'sqs:SetQueueAttributes'
-      Resource: 'arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${self:custom.queueName}'
+      Resource: 'arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:${env:SQS_QUEUE_NAME}'
 
 functions:
   app:
     handler: src/handler.application
-    timeout: 10
+    timeout: 6000
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
@@ -68,4 +66,3 @@ functions:
         - ${env:SUBNET_3}
         - ${env:SUBNET_4}
         - ${env:SUBNET_5}
-        - ${env:SUBNET_6}

@@ -30,16 +30,13 @@ class EmailController {
         [Op.or]: { id: contacts },
         [Op.and]: { active: true },
       },
-      attributes: ['id'],
     });
 
-    const activeContactsIds = activeContacts.map(({ id }) => id);
-
-    await email.setContacts(activeContactsIds);
+    await email.setContacts(activeContacts.map(({ id }) => id));
 
     const queueService = new QueueService();
 
-    const queue = await queueService.run(email.id);
+    const queue = await queueService.run(email, activeContacts);
 
     return res.json({ email, queue });
   }

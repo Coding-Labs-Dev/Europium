@@ -1,74 +1,58 @@
 import { SQS, AWSError } from 'aws-sdk';
-import { uuid } from 'uuidv4';
 import { Email, Contact, Template } from '@models/index';
-import {
-  SendMessageBatchRequest,
-  SendMessageBatchRequestEntry,
-  SendMessageBatchRequestEntryList,
-  SendMessageResult,
-} from 'aws-sdk/clients/sqs';
+import { SendMessageResult } from 'aws-sdk/clients/sqs';
 import { PromiseResult } from 'aws-sdk/lib/request';
 
 export default class SendEmailService {
   private sqs: SQS;
 
   constructor() {
-    this.sqs = new SQS({ region: 'us-east-1' });
+    this.sqs = new SQS({
+      region: 'us-east-1',
+      endpoint:
+        'https://vpce-0c0fa03f9c431f1a7.sqs.us-east-1.vpce.amazonaws.com',
+    });
   }
 
-  arrayChunks = (array: Array<any>, chunk: number): Array<Array<any>> =>
-    Array(Math.ceil(array.length / chunk))
-      .fill(0)
-      .map((_, index) => index * chunk)
-      .map(begin => array.slice(begin, begin + chunk));
-
   async run(
-    emailId: number,
+    email: Email,
+    contacts: Contact[],
   ): Promise<PromiseResult<SendMessageResult, AWSError>[] | void> {
-    const email = await Email.findByPk(emailId, {
+    const template = await Template.findByPk(email.templateId, {
       rejectOnEmpty: true,
-      include: [
-        { model: Template, as: 'template' },
-        { model: Contact, as: 'contacts' },
-      ],
     });
 
-    const { template, contacts, variables } = email;
+    const { variables } = email;
 
-    const emailsBatch: SendMessageBatchRequestEntry[] = this.arrayChunks(
-      contacts,
-      process.env.SES_MAX_SEND_QUOTA,
-    ).map(contactsBatch => {
-      const emails = contactsBatch.map(contact => ({
-        emailId,
+    const data: Promise<PromiseResult<SendMessageResult, AWSError>>[] = [];
+
+    let sent = 0;
+
+    contacts
+      .map(contact => ({
+        emailId: email.id,
         template,
         configurationName: process.env.SES_CONFIGURATION_NAME,
         source: process.env.SOURCE_EMAIL,
         variables,
         contact,
-      }));
-      return {
-        Id: uuid(),
-        DelaySeconds: 1,
-        MessageBody: JSON.stringify(emails),
-      };
-    });
-
-    const messagesBatch: SendMessageBatchRequestEntryList[] = this.arrayChunks(
-      emailsBatch,
-      10,
-    );
-
-    const data = await Promise.all(
-      messagesBatch.map(async batchMessage => {
-        const parameters: SendMessageBatchRequest = {
+      }))
+      .forEach(emailData => {
+        const message = {
+          MessageBody: JSON.stringify(emailData),
           QueueUrl: process.env.SQS_QUEUE,
-          Entries: batchMessage,
+          DelaySeconds: sent === process.env.SES_MAX_SEND_QUOTA ? 1 : 0,
         };
-        return this.sqs.sendMessageBatch(parameters).promise();
-      }),
-    );
+        data.push(this.sqs.sendMessage(message).promise());
+        if (sent === Number(process.env.SES_MAX_SEND_QUOTA)) {
+          sent = 0;
+        } else {
+          sent += 1;
+        }
+      });
 
-    return data;
+    const result = await Promise.all(data);
+
+    return result;
   }
 }

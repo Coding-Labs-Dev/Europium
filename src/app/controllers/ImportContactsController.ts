@@ -5,6 +5,12 @@ import { getFile, deleteFile } from '@utils/File';
 
 import { Contact, Tag, ContactTag } from '@models/index';
 
+const arrayChunks = (array: Array<any>, chunk: number): Array<Array<any>> =>
+  Array(Math.ceil(array.length / chunk))
+    .fill(0)
+    .map((_, index) => index * chunk)
+    .map(begin => array.slice(begin, begin + chunk));
+
 class ImportController {
   async store(req: Request, res: Response): Promise<Response> {
     const importContacts = new ImportContactService();
@@ -33,14 +39,13 @@ class ImportController {
         delete newContact.tags;
         return newContact;
       }),
-      { ignoreDuplicates: true },
+      { updateOnDuplicate: ['name', 'alternateNames'] },
     );
 
     const associateData: { contactId: number; tagId: number }[] = [];
-
     contacts.forEach(contact => {
-      const contactId = newContacts.filter(
-        ({ email }) => email === contact.email,
+      const contactId: number = newContacts.filter(
+        ({ email }) => contact.email === email,
       )[0].id;
       const tagsIds = allTags
         .filter(({ name }) => contact.tags.includes(name))
@@ -50,9 +55,18 @@ class ImportController {
       associationsData.forEach(item => associateData.push(item));
     });
 
-    await ContactTag.bulkCreate(associateData);
+    await Promise.all(
+      arrayChunks(associateData, 1000).map(contactsTags =>
+        ContactTag.bulkCreate(contactsTags),
+      ),
+    );
 
-    return res.json({ invalid, duplicated, contacts, tags });
+    return res.json({
+      invalid,
+      duplicated,
+      tags,
+      contacts,
+    });
   }
 }
 
